@@ -628,26 +628,6 @@ final class LeadEvents
     const COLLECT_OPERATORS_FOR_FIELD_TYPE = 'mautic.collect_operators_for_field_type';
 
     /**
-     * The mautic.collect_filter_choices_for_list_field_type event is dispatched when some filter based on a list type needs to load its choices.
-     *
-     * The event listener receives a
-     * Mautic\LeadBundle\Event\ListFieldChoicesEvent
-     *
-     * @var string
-     */
-    const COLLECT_FILTER_CHOICES_FOR_LIST_FIELD_TYPE = 'mautic.collect_filter_choices_for_list_field_type';
-
-    /**
-     * The mautic.collect_operators_for_field_type event is dispatched when some filter needs operators for a field type.
-     *
-     * The event listener receives a
-     * Mautic\LeadBundle\Event\TypeOperatorsEvent
-     *
-     * @var string
-     */
-    const COLLECT_OPERATORS_FOR_FIELD_TYPE = 'mautic.collect_operators_for_field_type';
-
-    /**
      * The mautic.collect_operators_for_field event is dispatched when some filter needs operators for a specific field.
      *
      * The event listener receives a
