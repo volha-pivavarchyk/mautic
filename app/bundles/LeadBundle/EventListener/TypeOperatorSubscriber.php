@@ -299,7 +299,7 @@ final class TypeOperatorSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         $form->add(
-            'filter',
+            'filter:empty',
             TextType::class,
             [
                 'label'    => false,
