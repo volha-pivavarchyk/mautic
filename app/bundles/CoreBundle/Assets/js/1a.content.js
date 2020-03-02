@@ -1069,7 +1069,7 @@ Mautic.activateFieldTypeahead = function (field, target, options, action) {
             minLength: 0
         });
     } else {
-        var typeAheadOptions = {
+        var fieldTypeahead = Mautic.activateTypeahead(fieldId, {
             prefetch: true,
             remote: true,
             action: action + "&field=" + target
