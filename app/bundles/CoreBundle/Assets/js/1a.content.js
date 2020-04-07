@@ -1073,7 +1073,7 @@ Mautic.activateFieldTypeahead = function (field, target, options, action) {
             prefetch: true,
             remote: true,
             action: action + "&field=" + target
-        };
+        });
 
         if (('undefined' !== typeof options) && ('undefined' !== typeof options.limit)) {
             typeAheadOptions.limit = options.limit;
