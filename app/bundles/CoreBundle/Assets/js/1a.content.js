@@ -608,7 +608,7 @@ Mautic.onPageLoad = function (container, response, inModal) {
             if (textarea.hasClass('editor-advanced') || textarea.hasClass('editor-basic-fullpage')) {
                 ckEditorToolbar = maxButtons;
             }
-            
+
             Mautic.ConvertFieldToCkeditor(textarea, ckEditorToolbar);
         });
     }
@@ -1069,11 +1069,11 @@ Mautic.activateFieldTypeahead = function (field, target, options, action) {
             minLength: 0
         });
     } else {
-        var fieldTypeahead = Mautic.activateTypeahead(fieldId, {
+        var typeAheadOptions = {
             prefetch: true,
             remote: true,
             action: action + "&field=" + target
-        });
+        };
 
         if (('undefined' !== typeof options) && ('undefined' !== typeof options.limit)) {
             typeAheadOptions.limit = options.limit;
