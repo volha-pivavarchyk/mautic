@@ -449,10 +449,7 @@ final class TypeOperatorSubscriberTest extends \PHPUnit\Framework\TestCase
             'properties' => [
                 'type' => 'select',
                 'list' => [
-                    [
-                        'label' => 'Choice A',
-                        'value' => 'choice_a',
-                    ],
+                    'Choice A' => 'choice_a',
                 ],
             ],
         ];
