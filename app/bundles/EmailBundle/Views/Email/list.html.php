@@ -99,28 +99,6 @@ if ('index' == $tmpl) {
                     ]
                 );
                 ?>
-                <?php
-                echo $view->render(
-                    'MauticCoreBundle:Helper:tableheader.html.php',
-                    [
-                        'sessionVar' => 'email',
-                        'orderBy'    => 'e.dateAdded',
-                        'text'       => 'mautic.lead.import.label.dateAdded',
-                        'class'      => 'visible-md visible-lg col-email-id',
-                    ]
-                );
-                ?>
-                <?php
-                echo $view->render(
-                    'MauticCoreBundle:Helper:tableheader.html.php',
-                    [
-                        'sessionVar' => 'email',
-                        'orderBy'    => 'e.dateModified',
-                        'text'       => 'mautic.lead.import.label.dateModified',
-                        'class'      => 'visible-md visible-lg col-email-id',
-                    ]
-                );
-                ?>
             </tr>
             </thead>
             <tbody>
