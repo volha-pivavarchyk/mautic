@@ -17,7 +17,7 @@ class SegmentConfigType extends AbstractType
         $builder->add(
             'segment_rebuild_time_warning',
             NumberType::class,
-            $a = [
+            [
                 'label'      => 'mautic.lead.list.form.config.segment_rebuild_time_warning',
                 'label_attr' => ['class' => 'control-label'],
                 'attr'       => [
@@ -27,8 +27,6 @@ class SegmentConfigType extends AbstractType
                 'required' => false,
             ]
         );
-
-        $b = 3;
     }
 
     /**
