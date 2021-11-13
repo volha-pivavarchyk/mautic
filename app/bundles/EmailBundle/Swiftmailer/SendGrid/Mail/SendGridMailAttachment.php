@@ -35,8 +35,6 @@ class SendGridMailAttachment
                     $mail->addAttachment($attachment);
                 }
             }
-        } else {
-            return;
         }
     }
 }
