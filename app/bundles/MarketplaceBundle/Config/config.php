@@ -175,14 +175,6 @@ return [
                     'mautic.http.client',
                 ],
             ],
-            'marketplace.service.allowlist' => [
-                'class'     => \Mautic\MarketplaceBundle\Service\Allowlist::class,
-                'arguments' => [
-                    'marketplace.service.config',
-                    'mautic.cache.provider',
-                    'mautic.http.client',
-                ],
-            ],
         ],
     ],
     // NOTE: when adding new parameters here, please add them to the developer documentation as well:
