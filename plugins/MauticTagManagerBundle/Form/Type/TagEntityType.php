@@ -48,6 +48,28 @@ class TagEntityType extends AbstractType
             ]
         );
 
+        $builder->add(
+            'summary',
+            TextType::class,
+            [
+                'required'   => false,
+                'label'      => 'mautic.tagmanager.tag.summary',
+                'label_attr' => ['class' => 'control-label'],
+                'attr'       => ['class' => 'form-control'],
+            ]
+        );
+
+        $builder->add(
+            'description',
+            TextareaType::class,
+            [
+                'required'   => false,
+                'label'      => 'mautic.core.description',
+                'label_attr' => ['class' => 'control-label'],
+                'attr'       => ['class' => 'form-control'],
+            ]
+        );
+
         if (!empty($options['action'])) {
             $builder->setAction($options['action']);
         }

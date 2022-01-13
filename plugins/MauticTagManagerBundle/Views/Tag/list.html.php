@@ -53,6 +53,16 @@ $listCommand = $view['translator']->trans('mautic.tagmanager.tag.searchcommand.l
                     'MauticCoreBundle:Helper:tableheader.html.php',
                     [
                         'sessionVar' => 'tags',
+                        'orderBy'    => 'lt.summary',
+                        'text'       => 'mautic.tagmanager.tag.summary',
+                        'class'      => 'col-tag-name',
+                    ]
+                );
+
+                echo $view->render(
+                    'MauticCoreBundle:Helper:tableheader.html.php',
+                    [
+                        'sessionVar' => 'tags',
                         'text'       => 'mautic.lead.list.thead.leadcount',
                         'class'      => 'visible-md visible-lg col-tag-leadcount',
                     ]
@@ -124,6 +134,12 @@ $listCommand = $view['translator']->trans('mautic.tagmanager.tag.searchcommand.l
                                 <small><?php echo $description; ?></small>
                             </div>
                         <?php endif; ?>
+                    </td>
+
+                    <td>
+                        <div>
+                            <?php echo $item->getSummary(); ?>
+                        </div>
                     </td>
 
                     <td class="visible-md visible-lg">
