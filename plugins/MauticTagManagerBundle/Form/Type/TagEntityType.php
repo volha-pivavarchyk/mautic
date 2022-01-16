@@ -20,6 +20,9 @@ class TagEntityType extends AbstractType
         // We only allow to set tag field value if we are creating new tag.
         $tagReadOnly = !empty($options['data']) && $options['data']->getId() ? true : false;
 
+        // We are only allow to set tag field value if we are creating new tag.
+        $tagReadOnly = !empty($options['data']) && $options['data']->getId() ? true : false;
+
         $builder->add(
             'tag',
             TextType::class,
