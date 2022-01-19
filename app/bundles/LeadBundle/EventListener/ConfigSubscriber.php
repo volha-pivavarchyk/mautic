@@ -57,13 +57,5 @@ class ConfigSubscriber implements EventSubscriberInterface
                 'company_unique_identifiers_operator' => $parameters['company_unique_identifiers_operator'],
             ],
         ]);
-
-        $event->addForm([
-            'bundle'     => 'LeadBundle',
-            'formAlias'  => 'segment_config',
-            'formType'   => SegmentConfigType::class,
-            'formTheme'  => 'MauticLeadBundle:FormTheme\Config',
-            'parameters' => $event->getParametersFromConfig('MauticLeadBundle'),
-        ]);
     }
 }
