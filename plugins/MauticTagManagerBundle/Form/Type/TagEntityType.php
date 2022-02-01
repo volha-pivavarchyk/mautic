@@ -17,9 +17,6 @@ class TagEntityType extends AbstractType
         $builder->add('buttons', FormButtonsType::class);
         $builder->addEventSubscriber(new CleanFormSubscriber(['description' => 'html']));
 
-        // We only allow to set tag field value if we are creating new tag.
-        $tagReadOnly = !empty($options['data']) && $options['data']->getId() ? true : false;
-
         // We are only allow to set tag field value if we are creating new tag.
         $tagReadOnly = !empty($options['data']) && $options['data']->getId() ? true : false;
 
