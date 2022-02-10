@@ -1230,15 +1230,6 @@ return [
                 ],
                 'tag' => 'mautic.update_check',
             ],
-            'mautic.update.step.composer_update' => [
-                'class'     => \Mautic\CoreBundle\Update\Step\ComposerUpdateStep::class,
-                'arguments' => [
-                    'translator',
-                    'monolog.logger.mautic',
-                    'mautic.helper.composer',
-                ],
-                'tag' => 'mautic.update_step',
-            ],
         ],
         'models' => [
             'mautic.core.model.auditlog' => [
