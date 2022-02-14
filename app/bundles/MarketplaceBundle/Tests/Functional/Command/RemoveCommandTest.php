@@ -42,7 +42,7 @@ final class RemoveCommandTest extends AbstractMauticTestCase
             $command
         );
 
-        Assert::assertSame(0, $result->getStatusCode());
+        Assert::assertSame(Command::SUCCESS, $result->getStatusCode());
     }
 
     public function testRemoveCommandWithInvalidPackageType(): void
