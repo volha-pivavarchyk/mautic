@@ -135,4 +135,3 @@
         Allow from all
     </If>
 </IfModule>
-
