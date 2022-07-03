@@ -184,6 +184,7 @@ final class TypeOperatorSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('smartphone', $choicesForAliases['device_type']['smartphone']);
         $this->assertSame(['Asset G' => 88], $choicesForAliases['lead_asset_download']);
         $this->assertSame('SA', $choicesForAliases['device_brand']['Samsung']);
+        $this->assertSame('SA', $choicesForAliases['device_brand']['Samsung']);
         $this->assertSame('Android', $choicesForAliases['device_os']['Android']);
         $this->assertArrayHasKey('Europe', $choicesForTypes['timezone']);
         $this->assertArrayHasKey('France', $choicesForTypes['region']);
@@ -356,8 +357,7 @@ final class TypeOperatorSubscriberTest extends \PHPUnit\Framework\TestCase
                             );
 
                             return true;
-                        }
-                    ),
+                        }),
                 ],
                 [
                     'filter',

@@ -611,7 +611,7 @@ final class LeadEvents
      * The mautic.collect_filter_choices_for_list_field_type event is dispatched when some filter based on a list type needs to load its choices.
      *
      * The event listener receives a
-     * Mautic\LeadBundle\Event\ListFieldChoicesEvent
+     * Mautic\LeadBundle\Event\TypeOperatorsEvent
      *
      * @var string
      */

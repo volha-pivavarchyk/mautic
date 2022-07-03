@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class TypeOperatorSubscriber implements EventSubscriberInterface
@@ -299,7 +299,7 @@ final class TypeOperatorSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         $form->add(
-            'filter',
+            'filter:empty',
             TextType::class,
             [
                 'label'    => false,

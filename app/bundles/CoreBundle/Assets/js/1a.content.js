@@ -608,7 +608,7 @@ Mautic.onPageLoad = function (container, response, inModal) {
             if (textarea.hasClass('editor-advanced') || textarea.hasClass('editor-basic-fullpage')) {
                 ckEditorToolbar = maxButtons;
             }
-            
+
             Mautic.ConvertFieldToCkeditor(textarea, ckEditorToolbar);
         });
     }
