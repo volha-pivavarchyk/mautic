@@ -126,12 +126,6 @@ $listCommand = $view['translator']->trans('mautic.tagmanager.tag.searchcommand.l
                         <?php endif; ?>
                     </td>
 
-                    <td>
-                        <div>
-                            <?php echo $item->getSummary(); ?>
-                        </div>
-                    </td>
-
                     <td class="visible-md visible-lg">
                         <a class="label label-primary" href="<?php echo $view['router']->path(
                             'mautic_contact_index',

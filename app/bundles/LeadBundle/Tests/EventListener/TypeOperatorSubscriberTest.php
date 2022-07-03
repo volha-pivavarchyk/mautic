@@ -356,8 +356,8 @@ final class TypeOperatorSubscriberTest extends \PHPUnit\Framework\TestCase
                                 $options['attr']
                             );
 
-                        return true;
-                    }),
+                            return true;
+                        }),
                 ],
                 [
                     'filter',
@@ -448,9 +448,7 @@ final class TypeOperatorSubscriberTest extends \PHPUnit\Framework\TestCase
         $details  = [
             'properties' => [
                 'type' => 'select',
-                'list' => [
-                    'Choice A' => 'choice_a',
-                ],
+                'list' => ['Choice A' => 'choice_a'],
             ],
         ];
         $event = new FormAdjustmentEvent($this->form, $alias, $object, $operator, $details);
