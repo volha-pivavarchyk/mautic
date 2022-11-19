@@ -334,10 +334,10 @@ class CommonRepository extends ServiceEntityRepository
                 ->createQueryBuilder()
                 ->select($alias)
                 ->from($this->_entityName, $alias, "{$alias}.id");
+        }
 
-            if ($this->getClassMetadata()->hasAssociation('category')) {
-                $q->leftJoin($this->getTableAlias().'.category', 'cat');
-            }
+        if ($this->getClassMetadata()->hasAssociation('category')) {
+            $q->leftJoin($this->getTableAlias().'.category', 'cat');
         }
 
         $this->buildClauses($q, $args);
