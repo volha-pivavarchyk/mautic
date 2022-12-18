@@ -141,9 +141,14 @@ class ParameterLoader
         $localConfigFile    = self::getLocalConfigFile($this->rootPath);
 
         // Load parameters array from local configuration
+        var_dump('$localConfigFile ---------------------------------------- here');
+        var_dump($localConfigFile);
         if (file_exists($localConfigFile)) {
+            var_dump('$localConfigFile ---------------------------------------- here');
             /** @var array $parameters */
             include $localConfigFile;
+            var_dump('db_host='.$parameters['db_host']);
+            var_dump('db_name='.$parameters['db_name']);
 
             // Override default with local
             $compiledParameters = array_merge($compiledParameters, $parameters);
