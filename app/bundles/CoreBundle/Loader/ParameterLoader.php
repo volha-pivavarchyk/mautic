@@ -157,8 +157,8 @@ class ParameterLoader
             var_dump('$localConfigFile ---------------------------------------- here');
             /** @var array $parameters */
             include $localConfigFile;
-            var_dump('db_host='.$parameters['db_host']);
-            var_dump('db_name='.$parameters['db_name']);
+            var_dump('db_host='.$parameters['db_host'] ?? 'no-db_host');
+            var_dump('db_name='.$parameters['db_name'] ?? 'no-db_name');
 
             // Override default with local
             $compiledParameters = array_merge($compiledParameters, $parameters);
