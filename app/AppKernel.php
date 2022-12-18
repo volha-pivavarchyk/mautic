@@ -96,6 +96,7 @@ class AppKernel extends Kernel
         /*
          * If we've already sent the response headers, and we have a session
          * set in the request, set that as the session in the container.
+         * set in the request, set that as the session in the container.
          */
         if (headers_sent() && $request->getSession()) {
             $this->getContainer()->set('session', $request->getSession());
