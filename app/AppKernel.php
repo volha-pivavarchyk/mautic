@@ -106,6 +106,11 @@ class AppKernel extends Kernel
         if (!defined('MAUTIC_INSTALLER')) {
             $db = $this->getContainer()->get('database_connection');
             try {
+                var_dump('////////////////////////////////////////////////');
+                var_dump($db->getPassword());
+                var_dump($db->getHost());
+                var_dump($db->getPort());
+                var_dump($db->getUsername());
                 $db->connect();
             } catch (\Exception $e) {
                 error_log($e);
