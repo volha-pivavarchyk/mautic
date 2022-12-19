@@ -143,6 +143,7 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
     {
         $connection = $this->connection;
         $command    = 'mysql -h"${:db_host}" -P"${:db_port}" -u"${:db_user}" "${:db_name}" < "${:db_backup_file}"';
+        var_dump($command);
         $envVars    = [
             'MYSQL_PWD'      => $connection->getPassword(),
             'db_host'        => $connection->getHost(),
@@ -151,7 +152,7 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
             'db_name'        => $connection->getDatabase(),
             'db_backup_file' => $file,
         ];
-
+        var_dump($envVars);
         $process = Process::fromShellCommandline($command);
         $process->run(null, $envVars);
 

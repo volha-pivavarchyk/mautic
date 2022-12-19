@@ -73,6 +73,16 @@ class ParameterLoader
         EnvVars\SiteUrlEnvVars::load($this->parameterBag, $defaultParameters, $envVariables);
         EnvVars\TwigEnvVars::load($this->parameterBag, $defaultParameters, $envVariables);
 
+//        var_dump('$envVariables->get(MAUTIC_DB_HOST)');
+//        var_dump($envVariables->get('MAUTIC_DB_HOST'));
+//        var_dump('$envVariables->get(MAUTIC_DB_PORT)');
+//        var_dump($envVariables->get('MAUTIC_DB_PORT'));
+//        var_dump('$envVariables->get(MAUTIC_DB_USER)');
+//        var_dump($envVariables->get('MAUTIC_DB_USER'));
+//        var_dump('$envVariables->get(MAUTIC_DB_PASSWORD)');
+//        var_dump($envVariables->get('MAUTIC_DB_PASSWORD'));
+//        var_dump('$envVariables->get(MAUTIC_DB_NAME)');
+//        var_dump($envVariables->get('MAUTIC_DB_NAME'));
         // Load the values into the environment for cache use
         $dotenv = new \Symfony\Component\Dotenv\Dotenv();
         $dotenv->populate($envVariables->all());
@@ -141,9 +151,15 @@ class ParameterLoader
         $localConfigFile    = self::getLocalConfigFile($this->rootPath);
 
         // Load parameters array from local configuration
+        var_dump('$localConfigFile ---------------------------------------- here');
+        var_dump($localConfigFile);
         if (file_exists($localConfigFile)) {
+            var_dump('--- $localConfigFile ---------------------------------------- here');
             /** @var array $parameters */
             include $localConfigFile;
+//            var_dump($parameters);
+//            var_dump('db_host='.$parameters['db_host'] ?? 'no-db_host');
+//            var_dump('db_name='.$parameters['db_name'] ?? 'no-db_name');
 
             // Override default with local
             $compiledParameters = array_merge($compiledParameters, $parameters);

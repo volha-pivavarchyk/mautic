@@ -41,6 +41,11 @@ $container->loadFromExtension('swiftmailer', [
     'disable_delivery' => true,
 ]);
 
+var_dump(getenv('DB_PORT'));
+var_dump('%mautic.db_port%');
+var_dump(getenv('DB_USER'));
+var_dump('%mautic.db_user%');
+
 $container->loadFromExtension('doctrine', [
     'dbal' => [
         'default_connection' => 'default',
