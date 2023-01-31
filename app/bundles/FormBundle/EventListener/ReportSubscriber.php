@@ -7,12 +7,15 @@ use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\FormBundle\Entity\Form;
 use Mautic\FormBundle\Entity\FormRepository;
 use Mautic\FormBundle\Entity\SubmissionRepository;
+use Mautic\FormBundle\FormEvents;
 use Mautic\LeadBundle\Model\CompanyReportData;
+use Mautic\FormBundle\Event\MappedObjectColumnEvent;
 use Mautic\ReportBundle\Event\ReportBuilderEvent;
 use Mautic\ReportBundle\Event\ReportGeneratorEvent;
 use Mautic\ReportBundle\Event\ReportGraphEvent;
 use Mautic\ReportBundle\ReportEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReportSubscriber implements EventSubscriberInterface
@@ -31,18 +34,22 @@ class ReportSubscriber implements EventSubscriberInterface
 
     private TranslatorInterface $translator;
 
+    private ContractsEventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         CompanyReportData $companyReportData,
         SubmissionRepository $submissionRepository,
         FormRepository $formRepository,
         CoreParametersHelper $coreParametersHelper,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ContractsEventDispatcherInterface $eventDispatcher
     ) {
-        $this->companyReportData    = $companyReportData;
-        $this->submissionRepository = $submissionRepository;
-        $this->formRepository       = $formRepository;
-        $this->coreParametersHelper = $coreParametersHelper;
-        $this->translator           = $translator;
+        $this->companyReportData           = $companyReportData;
+        $this->submissionRepository        = $submissionRepository;
+        $this->formRepository              = $formRepository;
+        $this->coreParametersHelper        = $coreParametersHelper;
+        $this->translator                  = $translator;
+        $this->eventDispatcher             = $eventDispatcher;
     }
 
     /**
@@ -157,11 +164,16 @@ class ReportSubscriber implements EventSubscriberInterface
             foreach ($forms as $form) {
                 $formEntity          = $form[0];
 
-                $formResultsColumns = $this->getFormResultsColumns($formEntity);
-                $leadColumns        = $event->getLeadColumns();
-                $companyColumns     = $this->companyReportData->getCompanyData();
+                $formResultsColumns  = $this->getFormResultsColumns($formEntity);
+                $leadColumns         = $event->getLeadColumns();
+                $companyColumns      = $this->companyReportData->getCompanyData();
 
-                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns);
+                $mappedObjectData    = $formEntity->getMappedFieldObjectData();
+                $eventMappedObject   = new MappedObjectColumnEvent($mappedObjectData);
+                $this->eventDispatcher->dispatch($eventMappedObject, FormEvents::ON_GENERATE_MAPPED_OBJECT_COLUMNS);
+                $mappedObjectColumns = $eventMappedObject->getMappedObjectColumns();
+
+                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $mappedObjectColumns);
 
                 $data = [
                     'display_name' => $formEntity->getId().' '.$formEntity->getName(),

@@ -168,4 +168,14 @@ final class FormEvents
      * @var string
      */
     const ON_FIELD_COLLECT = 'mautic.form.on_field_collect';
+
+    /**
+     * The mautic.form_on_generate_mapped_object_columns event is dispatched before displaying the report builder form to allow
+     * bundles to specify the report columns.
+     *
+     * The event listener receives a Mautic\FormBundle\Event\MappedObjectColumnGeneration instance.
+     *
+     * @var string
+     */
+    public const ON_GENERATE_MAPPED_OBJECT_COLUMNS = 'mautic.form_on_generate_mapped_object_columns';
 }
