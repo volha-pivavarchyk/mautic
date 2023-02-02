@@ -12,22 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class FieldControllerFunctionalTest extends MauticMysqlTestCase
 {
-//    protected $useCleanupRollback = false;
-
-    public function testNewEmailFieldFormIsPreMapped(): void
-    {
-        $this->client->request(
-            Request::METHOD_GET,
-            '/s/forms/field/new?type=email&tmpl=field&formId=temporary_form_hash&inBuilder=1',
-            [],
-            [],
-            $this->createAjaxHeaders()
-        );
-        $clientResponse = $this->client->getResponse();
-        $payload        = json_decode($clientResponse->getContent(), true);
-        Assert::assertSame(Response::HTTP_OK, $clientResponse->getStatusCode());
-        Assert::assertStringContainsString('<option value="email"  selected="selected">', $payload['newContent']);
-    }
+    protected $useCleanupRollback = false;
 
     public function testNewCaptchaFieldFormCanBeSaved(): void
     {
@@ -52,9 +37,7 @@ final class FieldControllerFunctionalTest extends MauticMysqlTestCase
 
         $this->client->request(Request::METHOD_POST, '/api/forms/new', $payload);
         $clientResponse = $this->client->getResponse();
-        dump($clientResponse);
         $response       = json_decode($clientResponse->getContent(), true);
-        dump($response);
         $formId         = $response['form']['id'];
 
         $this->assertSame(Response::HTTP_CREATED, $clientResponse->getStatusCode(), $clientResponse->getContent());
