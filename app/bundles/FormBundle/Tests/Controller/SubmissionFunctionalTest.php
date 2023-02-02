@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 final class SubmissionFunctionalTest extends MauticMysqlTestCase
 {
-    protected $useCleanupRollback = false;
+//    protected $useCleanupRollback = false;
 
     public function testRequiredConditionalFieldIfNotEmpty(): void
     {
@@ -76,6 +76,10 @@ final class SubmissionFunctionalTest extends MauticMysqlTestCase
         ];
         $this->client->request(Request::METHOD_PATCH, "/api/forms/{$formId}/edit", $patchPayload);
         $clientResponse = $this->client->getResponse();
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 80 : $clientResponse->getContent()=');
+        dump($clientResponse->getContent());
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         $this->assertSame(Response::HTTP_OK, $clientResponse->getStatusCode(), $clientResponse->getContent());
 
@@ -121,6 +125,10 @@ final class SubmissionFunctionalTest extends MauticMysqlTestCase
         $this->client->request(Request::METHOD_DELETE, "/api/forms/{$formId}/delete");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 125 : $response=');
+        dump($response);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         $this->assertSame(Response::HTTP_OK, $clientResponse->getStatusCode(), $clientResponse->getContent());
     }
