@@ -101,6 +101,8 @@ class AppKernel extends Kernel
                 throw new \Mautic\CoreBundle\Exception\DatabaseConnectionException($this->getContainer()->get('translator')->trans('mautic.core.db.connection.error', ['%code%' => $e->getCode()]), 0, $e);
             }
         }
+        dump($request);
+        dump($type);
 
         return parent::handle($request, $type, $catch);
     }
