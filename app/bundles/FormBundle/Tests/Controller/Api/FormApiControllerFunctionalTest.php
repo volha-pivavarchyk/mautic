@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
 {
-//    protected $useCleanupRollback = false;
+    protected $useCleanupRollback = false;
 
     private const TEST_PAYLOAD = [
         'name'        => 'API form',
@@ -332,6 +332,10 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->client->request(Request::METHOD_DELETE, "/api/forms/{$formId}/delete");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 360 : $clientResponse->getContent()=');
+        dump($clientResponse->getContent());
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         $this->assertSame(Response::HTTP_OK, $clientResponse->getStatusCode(), $clientResponse->getContent());
         $this->assertNull($response['form']['id']);
@@ -345,6 +349,10 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 360 : $clientResponse->getContent()=');
+        dump($clientResponse->getContent());
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $clientResponse->getStatusCode(), $clientResponse->getContent());
         $this->assertSame(Response::HTTP_NOT_FOUND, $response['errors'][0]['code']);
