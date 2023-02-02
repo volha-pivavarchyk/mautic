@@ -99,7 +99,10 @@ class CommonApiController extends FetchCommonApiController
      */
     public function deleteEntityAction($id)
     {
+        dump('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD');
+        dump('$id='.$id);
         $entity = $this->model->getEntity($id);
+        dump($entity);
         if (null !== $entity) {
             if (!$this->checkEntityAccess($entity, 'delete')) {
                 return $this->accessDenied();
@@ -113,7 +116,7 @@ class CommonApiController extends FetchCommonApiController
 
             return $this->handleView($view);
         }
-
+        dump('NOTFOUND_NOTFOUND_NOTFOUND_NOTFOUND_NOTFOUND_NOTFOUND_NOTFOUND_');
         return $this->notFound();
     }
 
