@@ -81,9 +81,11 @@ jobs:
         export DB_PORT=${!DB_PORT_STRING}
 
         if [[ "${{ matrix.php-versions }}" == "8.0" ]] && [[ "${{ matrix.db-types }}" == "mariadb" ]]; then
-          composer test -- --coverage-clover=coverage.xml --filter FormBundle
+          composer test -- --coverage-clover=coverage.xml
+#          composer test -- --coverage-clover=coverage.xml --filter FormBundle
         else
-          composer test -- --filter FormBundle
+          composer test
+#          composer test -- --filter FormBundle
         fi
       env:
         mysql_port: ${{ job.services.mysql.ports[3306] }}
