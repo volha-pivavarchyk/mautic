@@ -55,10 +55,10 @@ class AppKernel extends Kernel
 
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true): Response
     {
-        dump('//////////////////////////////////////////');
-        dump($request->getRequestUri());
-        dump($this->isInstalled());
-        dump('//////////////////////////////////////////');
+//        dump('//////////////////////////////////////////');
+//        dump($request->getRequestUri());
+//        dump($this->isInstalled());
+//        dump('//////////////////////////////////////////');
         if (false !== strpos($request->getRequestUri(), 'installer') || !$this->isInstalled()) {
             defined('MAUTIC_INSTALLER') or define('MAUTIC_INSTALLER', 1);
         }
@@ -310,10 +310,10 @@ class AppKernel extends Kernel
             $localParameters = $this->getParameterLoader()->getLocalParameterBag();
             $dbDriver        = $localParameters->get('db_driver');
             $mailerFromName  = $localParameters->get('mailer_from_name');
-            dump('//////////////////////////////////////////');
-            dump('$dbDriver='.$dbDriver);
-            dump('$mailerFromName='.$mailerFromName);
-            dump('//////////////////////////////////////////');
+//            dump('//////////////////////////////////////////');
+//            dump('$dbDriver='.$dbDriver);
+//            dump('$mailerFromName='.$mailerFromName);
+//            dump('//////////////////////////////////////////');
 
             $this->installed = !empty($dbDriver) && !empty($mailerFromName);
         }

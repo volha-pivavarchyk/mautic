@@ -76,10 +76,10 @@ final class SubmissionFunctionalTest extends MauticMysqlTestCase
         ];
         $this->client->request(Request::METHOD_PATCH, "/api/forms/{$formId}/edit", $patchPayload);
         $clientResponse = $this->client->getResponse();
-        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-        dump(self::class.' line 80 : $clientResponse->getContent()=');
-        dump($clientResponse->getContent());
-        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+//        dump(self::class.' line 80 : $clientResponse->getContent()=');
+//        dump($clientResponse->getContent());
+//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         $this->assertSame(Response::HTTP_OK, $clientResponse->getStatusCode(), $clientResponse->getContent());
 
