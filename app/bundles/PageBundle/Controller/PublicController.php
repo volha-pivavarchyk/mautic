@@ -41,7 +41,11 @@ class PublicController extends CommonFormController
         $model    = $this->getModel('page');
         $security = $this->get('mautic.security');
         /** @var Page $entity */
+        var_dump('--------------------------------------------------------------------');
+        dump($slug);
         $entity = $model->getEntityBySlugs($slug);
+        var_dump('--------------------------------------------------------------------');
+        dump($entity);
 
         // Do not hit preference center pages
         if (!empty($entity) && !$entity->getIsPreferenceCenter()) {
