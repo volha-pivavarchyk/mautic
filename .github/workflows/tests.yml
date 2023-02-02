@@ -83,7 +83,7 @@ jobs:
         if [[ "${{ matrix.php-versions }}" == "8.0" ]] && [[ "${{ matrix.db-types }}" == "mariadb" ]]; then
           composer test -- --coverage-clover=coverage.xml
         else
-          composer test -- --filter
+          composer test
         fi
       env:
         mysql_port: ${{ job.services.mysql.ports[3306] }}
