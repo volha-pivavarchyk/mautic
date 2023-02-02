@@ -92,6 +92,8 @@ class AppKernel extends Kernel
         }
 
         // Check for an an active db connection and die with error if unable to connect
+        dump('--------------------------------------------------');
+        dump(MAUTIC_INSTALLER);
         if (!defined('MAUTIC_INSTALLER')) {
             $db = $this->getContainer()->get('database_connection');
             try {
@@ -101,8 +103,8 @@ class AppKernel extends Kernel
                 throw new \Mautic\CoreBundle\Exception\DatabaseConnectionException($this->getContainer()->get('translator')->trans('mautic.core.db.connection.error', ['%code%' => $e->getCode()]), 0, $e);
             }
         }
-        dump($request);
-        dump($type);
+//        dump($request);
+//        dump($type);
 
         return parent::handle($request, $type, $catch);
     }
