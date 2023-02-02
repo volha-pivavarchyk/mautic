@@ -56,6 +56,10 @@ class AppKernel extends Kernel
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true): Response
     {
         if (false !== strpos($request->getRequestUri(), 'installer') || !$this->isInstalled()) {
+            dump('//////////////////////////////////////////');
+            dump($request->getRequestUri());
+            dump($this->isInstalled());
+            dump('//////////////////////////////////////////');
             defined('MAUTIC_INSTALLER') or define('MAUTIC_INSTALLER', 1);
         }
 
@@ -92,17 +96,20 @@ class AppKernel extends Kernel
         }
 
         // Check for an an active db connection and die with error if unable to connect
-        dump('////////////////////////////////////////////////////////');
-        dump('MAUTIC_INSTALLER');
-        dump(defined('MAUTIC_INSTALLER'));
-        dump('////////////////////////////////////////////////////////');
+        if (defined('MAUTIC_INSTALLER')) {
+            dump('////////////////////////////////////////////////////////');
+            dump('MAUTIC_INSTALLER');
+            dump(defined('MAUTIC_INSTALLER'));
+            dump('////////////////////////////////////////////////////////');
+        }
+
         if (!defined('MAUTIC_INSTALLER')) {
             $db = $this->getContainer()->get('database_connection');
-            dump('////////////////////////////////////////////////////////');
-            dump($db);
-            dump('////////////////////////////////////////////////////////');
             try {
                 $db->connect();
+//                dump('////////////////////////////////////////////////////////');
+//                dump($db);
+//                dump('////////////////////////////////////////////////////////');
             } catch (\Exception $e) {
                 error_log($e);
                 throw new \Mautic\CoreBundle\Exception\DatabaseConnectionException($this->getContainer()->get('translator')->trans('mautic.core.db.connection.error', ['%code%' => $e->getCode()]), 0, $e);
