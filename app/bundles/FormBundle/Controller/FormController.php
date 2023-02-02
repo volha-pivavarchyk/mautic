@@ -6,6 +6,8 @@ use Mautic\CoreBundle\Controller\FormController as CommonFormController;
 use Mautic\CoreBundle\Factory\PageHelperFactoryInterface;
 use Mautic\CoreBundle\Form\Type\DateRangeType;
 use Mautic\CoreBundle\Model\AuditLogModel;
+use Mautic\FormBundle\Collector\AlreadyMappedFieldCollectorInterface;
+use Mautic\FormBundle\Collector\MappedObjectCollector;
 use Mautic\FormBundle\Entity\Field;
 use Mautic\FormBundle\Entity\Form;
 use Mautic\FormBundle\Exception\ValidationException;
@@ -16,9 +18,26 @@ use Mautic\LeadBundle\Model\FieldModel;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class FormController extends CommonFormController
 {
+    /**
+     * @var AlreadyMappedFieldCollectorInterface
+     */
+    private $alreadyMappedFieldCollector;
+
+    /**
+     * @var MappedObjectCollector
+     */
+    private $mappedObjectCollector;
+
+    public function initialize(ControllerEvent $event)
+    {
+        $this->alreadyMappedFieldCollector = $this->get('mautic.form.collector.already.mapped.field');
+        $this->mappedObjectCollector       = $this->get('mautic.form.collector.mapped.object');
+    }
+
     /**
      * @param int $page
      *
@@ -434,18 +453,17 @@ class FormController extends CommonFormController
             [
                 'viewParameters' => [
                     'fields'         => $fieldHelper->getChoiceList($customComponents['fields']),
+                    'formFields'     => $modifiedFields,
+                    'mappedFields'   => $this->mappedObjectCollector->buildCollection(...$entity->getMappedFieldObjects()),
+                    'deletedFields'  => $deletedFields,
                     'viewOnlyFields' => $customComponents['viewOnlyFields'],
                     'actions'        => $customComponents['choices'],
                     'actionSettings' => $customComponents['actions'],
-                    'formFields'     => $modifiedFields,
                     'formActions'    => $modifiedActions,
-                    'deletedFields'  => $deletedFields,
                     'deletedActions' => $deletedActions,
                     'tmpl'           => $this->request->isXmlHttpRequest() ? $this->request->get('tmpl', 'index') : 'index',
                     'activeForm'     => $entity,
                     'form'           => $form->createView(),
-                    'contactFields'  => $leadFieldModel->getFieldListWithProperties(),
-                    'companyFields'  => $leadFieldModel->getFieldListWithProperties('company'),
                     'inBuilder'      => true,
                 ],
                 'contentTemplate' => 'MauticFormBundle:Builder:index.html.php',
@@ -480,6 +498,10 @@ class FormController extends CommonFormController
         $formData         = $this->request->request->get('mauticform');
         $sessionId        = isset($formData['sessionId']) ? $formData['sessionId'] : null;
         $customComponents = $model->getCustomComponents();
+        $modifiedFields   = [];
+        $deletedFields    = [];
+        $modifiedActions  = [];
+        $deletedActions   = [];
 
         if ($objectId instanceof Form) {
             $entity   = $objectId;
@@ -702,13 +724,12 @@ class FormController extends CommonFormController
         if ($cleanSlate) {
             //clean slate
             $this->clearSessionComponents($objectId);
+            $this->alreadyMappedFieldCollector->removeAllForForm($objectId);
 
             //load existing fields into session
-            $modifiedFields    = [];
-            $usedLeadFields    = [];
-            $usedCompanyFields = [];
-            $existingFields    = $entity->getFields()->toArray();
-            $submitButton      = false;
+            $modifiedFields   = [];
+            $existingFields   = $entity->getFields()->toArray();
+            $submitButton     = false;
 
             foreach ($existingFields as $formField) {
                 // Check to see if the field still exists
@@ -735,14 +756,15 @@ class FormController extends CommonFormController
                     // Set the custom parameters
                     $field['customParameters'] = $customComponents['fields'][$field['type']];
                 }
-                $field['formId'] = $objectId;
 
+                $field['formId']     = $objectId;
                 $modifiedFields[$id] = $field;
 
-                if (!empty($field['leadField']) && empty($field['parent'])) {
-                    $usedLeadFields[$id] = $field['leadField'];
+                if (!empty($field['mappedObject']) && !empty($field['mappedField']) && empty($field['parent'])) {
+                    $this->alreadyMappedFieldCollector->addField($objectId, $field['mappedObject'], $field['mappedField']);
                 }
             }
+
             if (!$submitButton) { //means something deleted the submit button from the form
                 //add a submit button
                 $keyId = 'new'.hash('sha1', uniqid(mt_rand()));
@@ -758,7 +780,6 @@ class FormController extends CommonFormController
                 $modifiedFields[$keyId]['formId']          = $objectId;
                 unset($modifiedFields[$keyId]['form']);
             }
-            $session->set('mautic.form.'.$objectId.'.fields.leadfields', $usedLeadFields);
 
             if (!empty($reorder)) {
                 uasort(
@@ -815,27 +836,35 @@ class FormController extends CommonFormController
             $deletedActions = [];
         }
 
-        $leadFieldModel = $this->getModel('lead.field');
-        \assert($leadFieldModel instanceof FieldModel);
+//        $leadFieldModel = $this->getModel('lead.field');
+//        \assert($leadFieldModel instanceof FieldModel);
+//
+//        $mappedFields  = [];
+//        $mappedObjects = $entity->getMappedFieldObjects();
+//
+//        foreach ($mappedObjects as $mappedObject) {
+//            $mappedFields[$mappedObject] = $this->fieldCollector->getFields($mappedObject);
+//        }
 
         return $this->delegateView(
             [
                 'viewParameters' => [
                     'fields'             => $availableFields,
+                    'formFields'         => $modifiedFields,
+                    'deletedFields'      => $deletedFields,
+                    'mappedFields'       => $this->mappedObjectCollector->buildCollection(...$entity->getMappedFieldObjects()),
+                    'formActions'        => $modifiedActions,
+                    'deletedActions'     => $deletedActions,
                     'viewOnlyFields'     => $customComponents['viewOnlyFields'],
                     'actions'            => $customComponents['choices'],
                     'actionSettings'     => $customComponents['actions'],
-                    'formFields'         => $modifiedFields,
                     'fieldSettings'      => $customComponents['fields'],
-                    'formActions'        => $modifiedActions,
-                    'deletedFields'      => $deletedFields,
-                    'deletedActions'     => $deletedActions,
                     'tmpl'               => $this->request->isXmlHttpRequest() ? $this->request->get('tmpl', 'index') : 'index',
                     'activeForm'         => $entity,
                     'form'               => $form->createView(),
                     'forceTypeSelection' => $forceTypeSelection,
-                    'contactFields'      => $leadFieldModel->getFieldListWithProperties('lead'),
-                    'companyFields'      => $leadFieldModel->getFieldListWithProperties('company'),
+                    // 'contactFields'      => $this->getModel('lead.field')->getFieldListWithProperties('lead'),
+                    // 'companyFields'      => $this->getModel('lead.field')->getFieldListWithProperties('company'),
                     'inBuilder'          => true,
                 ],
                 'contentTemplate' => 'MauticFormBundle:Builder:index.html.php',
@@ -1137,10 +1166,10 @@ class FormController extends CommonFormController
         $session = $this->get('session');
         $session->remove('mautic.form.'.$sessionId.'.fields.modified');
         $session->remove('mautic.form.'.$sessionId.'.fields.deleted');
-        $session->remove('mautic.form.'.$sessionId.'.fields.leadfields');
-
         $session->remove('mautic.form.'.$sessionId.'.actions.modified');
         $session->remove('mautic.form.'.$sessionId.'.actions.deleted');
+
+        $this->alreadyMappedFieldCollector->removeAllForForm((string) $sessionId);
     }
 
     public function batchRebuildHtmlAction()
