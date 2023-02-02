@@ -12,14 +12,14 @@ on:
 jobs:
   phpunit:
     # We don't want the scheduled jobs to run on forks of Mautic
-    if: (github.event_name == 'schedule' && (github.repository == 'mautic/mautic' || github.repository == 'mautic/api-library') ) || (github.event_name != 'schedule')
+    if: (github.event_name == 'schedule' && github.repository == 'volha-pivavarchyk/mautic' ) || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         php-versions: ['7.4']
         db-types: ['mysql', 'mariadb']
-  
+
     name: PHPUnit ${{ matrix.php-versions }} ${{ matrix.db-types }}
 
     services:
@@ -46,7 +46,7 @@ jobs:
       # Codecov needs access to previous commits, so we add fetch-depth: 0
       with:
         fetch-depth: 0
-    
+
     - name: Setup PHP, with composer and extensions
       uses: shivammathur/setup-php@v2
       with:
@@ -54,7 +54,7 @@ jobs:
         extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql, pdo_mysql
         coverage: pcov
         ini-values: pcov.directory=., pcov.exclude="~tests|themes|vendor~"
-    
+
     - name: add MySQL config file
       run: |
         mysqldump --version
@@ -84,30 +84,30 @@ jobs:
         mysql_port: ${{ job.services.mysql.ports[3306] }}
         mariadb_port: ${{ job.services.mariadb.ports[3306] }}
 
-    - name: Upload coverage report
-      if: ${{ matrix.php-versions == '7.4' && matrix.db-types == 'mysql' && github.repository == 'mautic/mautic' }}
-      uses: codecov/codecov-action@v2
-      with:
-        files: ./coverage.xml
-        fail_ci_if_error: true
+#    - name: Upload coverage report
+#      if: ${{ matrix.php-versions == '7.4' && matrix.db-types == 'mysql' && github.repository == 'mautic/mautic' }}
+#      uses: codecov/codecov-action@v2
+#      with:
+#        files: ./coverage.xml
+#        fail_ci_if_error: true
+#
+#    - name: Slack Notification if tests fail
+#      uses: rtCamp/action-slack-notify@v2
+#      if: ${{ failure() && github.event_name == 'schedule' }}
+#      env:
+#        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+#        SLACK_MESSAGE: 'The daily GitHub Actions tests in mautic/mautic have failed. Most likely something external has changed, like a PHP version update.'
 
-    - name: Slack Notification if tests fail
-      uses: rtCamp/action-slack-notify@v2
-      if: ${{ failure() && github.event_name == 'schedule' }}
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: 'The daily GitHub Actions tests in mautic/mautic have failed. Most likely something external has changed, like a PHP version update.'
-
-    - name: Store log artifacts
-      if: ${{ always() }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: logs-${{ matrix.php-versions }}-${{ matrix.db-types }}
-        path: ./var/logs/*
+#    - name: Store log artifacts
+#      if: ${{ always() }}
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: logs-${{ matrix.php-versions }}-${{ matrix.db-types }}
+#        path: ./var/logs/*
 
   misc:
     # We don't want the scheduled jobs to run on forks of Mautic
-    if: (github.event_name == 'schedule' && (github.repository == 'mautic/mautic' || github.repository == 'mautic/api-library') ) || (github.event_name != 'schedule')
+    if: (github.event_name == 'schedule' && github.repository == 'volha-pivavarchyk/mautic' ) || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
 
     strategy:
@@ -136,7 +136,7 @@ jobs:
       run: |
         composer validate
         composer install --prefer-dist --no-progress --no-suggest
-    
+
     - name: Run ${{ matrix.commands }}
       run: |
         if [[ "${{ matrix.commands }}" == "PHPSTAN" ]]; then
@@ -193,9 +193,9 @@ jobs:
           exit 1
         fi
 
-    - name: Slack Notification if tests fail
-      uses: rtCamp/action-slack-notify@v2
-      if: ${{ failure() && github.event_name == 'schedule' }}
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_MESSAGE: 'The daily GitHub Actions tests in mautic/mautic have failed. Most likely something external has changed, like a PHP version update.'
+#    - name: Slack Notification if tests fail
+#      uses: rtCamp/action-slack-notify@v2
+#      if: ${{ failure() && github.event_name == 'schedule' }}
+#      env:
+#        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+#        SLACK_MESSAGE: 'The daily GitHub Actions tests in mautic/mautic have failed. Most likely something external has changed, like a PHP version update.'
