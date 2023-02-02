@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 final class SubmissionFunctionalTest extends MauticMysqlTestCase
 {
-//    protected $useCleanupRollback = false;
+    protected $useCleanupRollback = false;
 
     public function testRequiredConditionalFieldIfNotEmpty(): void
     {
