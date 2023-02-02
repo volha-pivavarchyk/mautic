@@ -352,11 +352,13 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $tag1Payload = ['tag' => 'add this'];
         $tag2Payload = ['tag' => 'remove this'];
 
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
         $this->client->request('POST', '/api/tags/new', $tag1Payload);
         $clientResponse = $this->client->getResponse();
 //        dump($clientResponse);
         $response       = json_decode($clientResponse->getContent(), true);
-//        dump($response);
+        dump($response);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
         $tag1Id         = $response['tag']['id'];
 
         $this->client->request('POST', '/api/tags/new', $tag2Payload);
