@@ -345,17 +345,17 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
 //        $this->assertEquals($payload['formType'], $response['form']['formType']);
 //        $this->assertNotEmpty($response['form']['cachedHtml']);
 //
-//        // Get (ensure that the form is gone):
-//        $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
-//        $clientResponse = $this->client->getResponse();
-//        $response       = json_decode($clientResponse->getContent(), true);
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//        dump(self::class.' line 360 : $clientResponse->getContent()=');
-//        dump($clientResponse->getContent());
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//
-//        $this->assertSame(Response::HTTP_NOT_FOUND, $clientResponse->getStatusCode(), $clientResponse->getContent());
-//        $this->assertSame(Response::HTTP_NOT_FOUND, $response['errors'][0]['code']);
+        // Get (ensure that the form is gone):
+        $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
+        $clientResponse = $this->client->getResponse();
+        $response       = json_decode($clientResponse->getContent(), true);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 360 : $clientResponse->getContent()=');
+        dump($clientResponse->getContent());
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $clientResponse->getStatusCode(), $clientResponse->getContent());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response['errors'][0]['code']);
     }
 
     public function testFormWithChangeTagsAction()
