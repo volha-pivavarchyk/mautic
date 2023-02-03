@@ -143,7 +143,7 @@ final class AuthenticationListener
         }
 
         dump('=================================================');
-        dump($user);
+        dump(is_string($user) ? $user : $user->getName());
         if (!$user->isAdmin() && empty($user->getActivePermissions())) {
             $activePermissions = $this->permissionRepository->getPermissionsByRole($user->getRole());
 

@@ -273,8 +273,8 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $formCrawler = $crawler->filter('form[id=mauticform_apiform]');
         $this->assertSame(1, $formCrawler->count());
         $form = $formCrawler->form();
-        dump('//////////////////////////////////////////////');
-        dump($form);
+//        dump('//////////////////////////////////////////////');
+//        dump($form);
 //        $form->setValues([
 //            'mauticform[email]'       => 'john@doe.test',
 //            'mauticform[number]'      => '123',
