@@ -52,9 +52,9 @@ final class FieldControllerFunctionalTest extends MauticMysqlTestCase
 
         $this->client->request(Request::METHOD_POST, '/api/forms/new', $payload);
         $clientResponse = $this->client->getResponse();
-        dump($clientResponse);
+//        dump($clientResponse);
         $response       = json_decode($clientResponse->getContent(), true);
-        dump($response);
+//        dump($response);
         $formId         = $response['form']['id'];
 
         $this->assertSame(Response::HTTP_CREATED, $clientResponse->getStatusCode(), $clientResponse->getContent());
