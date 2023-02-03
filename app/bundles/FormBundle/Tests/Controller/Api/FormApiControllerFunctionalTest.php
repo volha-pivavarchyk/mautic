@@ -329,24 +329,7 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         );
 
         // Delete:
-//        $this->client->request(Request::METHOD_DELETE, "/api/forms/{$formId}/delete");
-//        $clientResponse = $this->client->getResponse();
-//        $response       = json_decode($clientResponse->getContent(), true);
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//        dump(self::class.' line 360 : $clientResponse->getContent()=');
-//        dump($clientResponse->getContent());
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//
-//        $this->assertSame(Response::HTTP_OK, $clientResponse->getStatusCode(), $clientResponse->getContent());
-//        $this->assertNull($response['form']['id']);
-//        $this->assertEquals($payload['name'], $response['form']['name']);
-//        $this->assertEquals($payload['description'], $response['form']['description']);
-//        $this->assertCount($fieldCount, $response['form']['fields']);
-//        $this->assertEquals($payload['formType'], $response['form']['formType']);
-//        $this->assertNotEmpty($response['form']['cachedHtml']);
-//
-        // Get (ensure that the form is gone):
-        $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
+        $this->client->request(Request::METHOD_DELETE, "/api/forms/{$formId}/delete");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
         dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
@@ -354,8 +337,25 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         dump($clientResponse->getContent());
         dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $clientResponse->getStatusCode(), $clientResponse->getContent());
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response['errors'][0]['code']);
+        $this->assertSame(Response::HTTP_OK, $clientResponse->getStatusCode(), $clientResponse->getContent());
+        $this->assertNull($response['form']['id']);
+        $this->assertEquals($payload['name'], $response['form']['name']);
+        $this->assertEquals($payload['description'], $response['form']['description']);
+        $this->assertCount($fieldCount, $response['form']['fields']);
+        $this->assertEquals($payload['formType'], $response['form']['formType']);
+        $this->assertNotEmpty($response['form']['cachedHtml']);
+//
+        // Get (ensure that the form is gone):
+//        $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
+//        $clientResponse = $this->client->getResponse();
+//        $response       = json_decode($clientResponse->getContent(), true);
+//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+//        dump(self::class.' line 360 : $clientResponse->getContent()=');
+//        dump($clientResponse->getContent());
+//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+//
+//        $this->assertSame(Response::HTTP_NOT_FOUND, $clientResponse->getStatusCode(), $clientResponse->getContent());
+//        $this->assertSame(Response::HTTP_NOT_FOUND, $response['errors'][0]['code']);
     }
 
     public function testFormWithChangeTagsAction()
