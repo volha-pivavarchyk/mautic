@@ -106,10 +106,10 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->client->request('POST', '/api/forms/new', $payload);
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//        dump(self::class.' line 110 : $response=');
-//        dump($response);
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 110 : $response=');
+        dump($response);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
         if (!empty($response['errors'][0])) {
             $this->fail($response['errors'][0]['code'].': '.$response['errors'][0]['message']);
@@ -256,7 +256,7 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->assertNotEmpty($response['form']['cachedHtml']);
 
         // Get:
-        $this->client->request(Request::METHOD_GET, "/forms/{$formId}");
+        $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
 
@@ -269,12 +269,10 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->assertNotEmpty($response['form']['cachedHtml']);
 
         // Submit the form:
-        $crawler     = $this->client->request(Request::METHOD_GET, "/api/form/{$formId}");
+        $crawler     = $this->client->request(Request::METHOD_GET, "/form/{$formId}");
         $formCrawler = $crawler->filter('form[id=mauticform_apiform]');
         $this->assertSame(1, $formCrawler->count());
         $form = $formCrawler->form();
-//        dump('//////////////////////////////////////////////');
-//        dump($form);
         $form->setValues([
             'mauticform[email]'       => 'john@doe.test',
             'mauticform[number]'      => '123',
@@ -325,11 +323,11 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         // The previous request changes user to anonymous. We have to configure API again.
         $this->setUpSymfony(
             [
-                'api_enabled'                       => true,
-                'api_enable_basic_auth'             => true,
-                "create_custom_field_in_background" => false,
-                "mailer_from_name"                  => "Mautic",
-                "db_driver"                         => "pdo_mysql",
+                'api_enabled'           => true,
+                'api_enable_basic_auth' => true,
+                'create_custom_field_in_background' => false,
+                'mailer_from_name'                  => 'Mautic',
+                'db_driver'                         => 'pdo_mysql',
             ]
         );
 
@@ -350,7 +348,7 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->assertEquals($payload['formType'], $response['form']['formType']);
         $this->assertNotEmpty($response['form']['cachedHtml']);
 
-//         Get (ensure that the form is gone):
+        // Get (ensure that the form is gone):
         $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
@@ -373,10 +371,10 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $clientResponse = $this->client->getResponse();
 //        dump($clientResponse);
         $response       = json_decode($clientResponse->getContent(), true);
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-//        dump(self::class.' line 360 : $response=');
-//        dump($response);
-//        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        dump(self::class.' line 360 : $response=');
+        dump($response);
+        dump('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
         $tag1Id         = $response['tag']['id'];
 
         $this->client->request('POST', '/api/tags/new', $tag2Payload);
