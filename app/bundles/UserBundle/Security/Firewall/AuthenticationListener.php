@@ -142,6 +142,8 @@ final class AuthenticationListener
             $user = $this->assignRoleFromToken($token);
         }
 
+        dump('=================================================');
+        dump($user);
         if (!$user->isAdmin() && empty($user->getActivePermissions())) {
             $activePermissions = $this->permissionRepository->getPermissionsByRole($user->getRole());
 
