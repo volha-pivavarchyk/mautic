@@ -256,7 +256,7 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->assertNotEmpty($response['form']['cachedHtml']);
 
         // Get:
-        $this->client->request(Request::METHOD_GET, "/api/forms/{$formId}");
+        $this->client->request(Request::METHOD_GET, "/forms/{$formId}");
         $clientResponse = $this->client->getResponse();
         $response       = json_decode($clientResponse->getContent(), true);
 
@@ -325,8 +325,11 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         // The previous request changes user to anonymous. We have to configure API again.
         $this->setUpSymfony(
             [
-                'api_enabled'           => true,
-                'api_enable_basic_auth' => true,
+                'api_enabled'                       => true,
+                'api_enable_basic_auth'             => true,
+                "create_custom_field_in_background" => false,
+                "mailer_from_name"                  => "Mautic",
+                "db_driver"                         => "pdo_mysql",
             ]
         );
 
