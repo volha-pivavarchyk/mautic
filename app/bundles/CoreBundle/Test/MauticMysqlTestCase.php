@@ -88,6 +88,9 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
             throw new LogicException('You cannot re-create the client when a transaction rollback for cleanup is enabled. Turn it off using $useCleanupRollback property or avoid re-creating a client.');
         }
 
+        dump('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        dump($defaultConfigOptions);
+
         parent::setUpSymfony($defaultConfigOptions);
     }
 
