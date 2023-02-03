@@ -270,65 +270,65 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
 
         // Submit the form:
         $crawler     = $this->client->request(Request::METHOD_GET, "/api/form/{$formId}");
-//        $formCrawler = $crawler->filter('form[id=mauticform_apiform]');
-//        $this->assertSame(1, $formCrawler->count());
-//        $form = $formCrawler->form();
+        $formCrawler = $crawler->filter('form[id=mauticform_apiform]');
+        $this->assertSame(1, $formCrawler->count());
+        $form = $formCrawler->form();
 //        dump('//////////////////////////////////////////////');
 //        dump($form);
-//        $form->setValues([
-//            'mauticform[email]'       => 'john@doe.test',
-//            'mauticform[number]'      => '123',
-//            'mauticform[company]'     => 'Doe Corp',
-//            'mauticform[phone]'       => '+420444555666',
-//            'mauticform[country]'     => 'Czech Republic',
-//            'mauticform[state]'       => 'Plzeňský kraj',
-//            'mauticform[multiselect]' => ['two'],
-//        ]);
-//        $this->client->submit($form);
-//
-//        // Ensure the submission was created properly.
-//        $submissions = $this->em->getRepository(Submission::class)->findAll();
-//
-//        Assert::assertCount(1, $submissions);
-//
-//        /** @var Submission $submission */
-//        $submission = $submissions[0];
-//        Assert::assertSame([
-//            'email'       => 'john@doe.test',
-//            'number'      => 123.0,
-//            'company'     => 'Doe Corp',
-//            'phone'       => '+420444555666',
-//            'country'     => 'Czech Republic',
-//            'multiselect' => 'two',
-//            'state'       => 'Plzeňský kraj',
-//        ], $submission->getResults());
-//
-//        // A contact should be created by the submission.
-//        $contact = $submission->getLead();
-//
-//        Assert::assertSame('john@doe.test', $contact->getEmail());
-//        Assert::assertSame('Czech Republic', $contact->getCountry());
-//        Assert::assertSame('Plzeňský kraj', $contact->getState());
-//        Assert::assertSame(123, $contact->getPoints());
-//        Assert::assertSame('Doe Corp', $contact->getCompany());
-//
-//        $companies = $this->em->getRepository(Company::class)->findAll();
-//
-//        Assert::assertCount(1, $companies);
-//
-//        // A company should be created by the submission.
-//        /** @var Company $company */
-//        $company = $companies[0];
-//        Assert::assertSame('Doe Corp', $company->getName());
-//        Assert::assertSame('+420444555666', $company->getPhone());
-//
-//        // The previous request changes user to anonymous. We have to configure API again.
-//        $this->setUpSymfony(
-//            [
-//                'api_enabled'           => true,
-//                'api_enable_basic_auth' => true,
-//            ]
-//        );
+        $form->setValues([
+            'mauticform[email]'       => 'john@doe.test',
+            'mauticform[number]'      => '123',
+            'mauticform[company]'     => 'Doe Corp',
+            'mauticform[phone]'       => '+420444555666',
+            'mauticform[country]'     => 'Czech Republic',
+            'mauticform[state]'       => 'Plzeňský kraj',
+            'mauticform[multiselect]' => ['two'],
+        ]);
+        $this->client->submit($form);
+
+        // Ensure the submission was created properly.
+        $submissions = $this->em->getRepository(Submission::class)->findAll();
+
+        Assert::assertCount(1, $submissions);
+
+        /** @var Submission $submission */
+        $submission = $submissions[0];
+        Assert::assertSame([
+            'email'       => 'john@doe.test',
+            'number'      => 123.0,
+            'company'     => 'Doe Corp',
+            'phone'       => '+420444555666',
+            'country'     => 'Czech Republic',
+            'multiselect' => 'two',
+            'state'       => 'Plzeňský kraj',
+        ], $submission->getResults());
+
+        // A contact should be created by the submission.
+        $contact = $submission->getLead();
+
+        Assert::assertSame('john@doe.test', $contact->getEmail());
+        Assert::assertSame('Czech Republic', $contact->getCountry());
+        Assert::assertSame('Plzeňský kraj', $contact->getState());
+        Assert::assertSame(123, $contact->getPoints());
+        Assert::assertSame('Doe Corp', $contact->getCompany());
+
+        $companies = $this->em->getRepository(Company::class)->findAll();
+
+        Assert::assertCount(1, $companies);
+
+        // A company should be created by the submission.
+        /** @var Company $company */
+        $company = $companies[0];
+        Assert::assertSame('Doe Corp', $company->getName());
+        Assert::assertSame('+420444555666', $company->getPhone());
+
+        // The previous request changes user to anonymous. We have to configure API again.
+        $this->setUpSymfony(
+            [
+                'api_enabled'           => true,
+                'api_enable_basic_auth' => true,
+            ]
+        );
 
         // Delete:
         $this->client->request(Request::METHOD_DELETE, "/api/forms/{$formId}/delete");
