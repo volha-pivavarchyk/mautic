@@ -45,7 +45,7 @@ class PublicController extends CommonFormController
         dump($slug);
         $entity = $model->getEntityBySlugs($slug);
         var_dump('--------------------------------------------------------------------');
-        dump($entity);
+//        dump($entity);
 
         // Do not hit preference center pages
         if (!empty($entity) && !$entity->getIsPreferenceCenter()) {
