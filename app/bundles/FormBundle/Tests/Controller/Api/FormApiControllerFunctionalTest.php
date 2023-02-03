@@ -269,7 +269,7 @@ final class FormApiControllerFunctionalTest extends MauticMysqlTestCase
         $this->assertNotEmpty($response['form']['cachedHtml']);
 
         // Submit the form:
-        $crawler     = $this->client->request(Request::METHOD_GET, "/form/{$formId}");
+        $crawler     = $this->client->request(Request::METHOD_GET, "/api/form/{$formId}");
 //        $formCrawler = $crawler->filter('form[id=mauticform_apiform]');
 //        $this->assertSame(1, $formCrawler->count());
 //        $form = $formCrawler->form();
