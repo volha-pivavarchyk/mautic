@@ -8,16 +8,12 @@ use Mautic\FormBundle\Collector\FieldCollector;
 use Mautic\FormBundle\Entity\Form;
 use Mautic\FormBundle\Entity\FormRepository;
 use Mautic\FormBundle\Entity\SubmissionRepository;
-use Mautic\FormBundle\Event\FieldCollectEvent;
-use Mautic\FormBundle\FormEvents;
 use Mautic\LeadBundle\Model\CompanyReportData;
-use Mautic\FormBundle\Event\MappedObjectColumnEvent;
 use Mautic\ReportBundle\Event\ReportBuilderEvent;
 use Mautic\ReportBundle\Event\ReportGeneratorEvent;
 use Mautic\ReportBundle\Event\ReportGraphEvent;
 use Mautic\ReportBundle\ReportEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReportSubscriber implements EventSubscriberInterface
@@ -36,26 +32,18 @@ class ReportSubscriber implements EventSubscriberInterface
 
     private TranslatorInterface $translator;
 
-    private ContractsEventDispatcherInterface $eventDispatcher;
-    private FieldCollector $fieldCollector;
-
     public function __construct(
         CompanyReportData $companyReportData,
         SubmissionRepository $submissionRepository,
         FormRepository $formRepository,
         CoreParametersHelper $coreParametersHelper,
-        TranslatorInterface $translator,
-        ContractsEventDispatcherInterface $eventDispatcher,
-        FieldCollector $fieldCollector
+        TranslatorInterface $translator
     ) {
         $this->companyReportData           = $companyReportData;
         $this->submissionRepository        = $submissionRepository;
         $this->formRepository              = $formRepository;
         $this->coreParametersHelper        = $coreParametersHelper;
         $this->translator                  = $translator;
-        $this->eventDispatcher             = $eventDispatcher;
-        $this->fieldCollector             = $fieldCollector;
-
     }
 
     /**
@@ -175,16 +163,12 @@ class ReportSubscriber implements EventSubscriberInterface
                 $companyColumns      = $this->companyReportData->getCompanyData();
 
                 $mappedObjectData    = $formEntity->getMappedFieldObjectData();
-//                $eventMappedObject   = new MappedObjectColumnEvent($mappedObjectData);
-//                $this->eventDispatcher->dispatch($eventMappedObject, FormEvents::ON_GENERATE_MAPPED_OBJECT_COLUMNS);
-//                $mappedObjectColumns = $eventMappedObject->getMappedObjectColumns();
 
                 foreach ($mappedObjectData as $item) {
                     $columns       = $event->getObjectColumns($item['mappedObject'], ['fieldAlias' => $item['fieldAlias']]);
                     $columnsMapped = array_merge($columnsMapped ?? [], $columns);
                 }
 
-//                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $mappedObjectColumns);
                 $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $columnsMapped ?? []);
 
                 $data = [
