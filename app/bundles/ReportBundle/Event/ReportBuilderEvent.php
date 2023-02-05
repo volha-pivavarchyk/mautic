@@ -6,6 +6,7 @@ use Mautic\ChannelBundle\Helper\ChannelListHelper;
 use Mautic\ReportBundle\Builder\MauticReportBuilder;
 use Mautic\ReportBundle\Helper\ReportHelper;
 use Mautic\ReportBundle\Model\ReportModel;
+use Mautic\ReportBundle\ReportEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -316,6 +317,15 @@ class ReportBuilderEvent extends AbstractReportEvent
         }
 
         return $channelColumns;
+    }
+
+    public function getObjectColumns(string $object, array $properties = []): array
+    {
+        if ('contact' === $object || 'company' === $object) {
+            return [];
+        }
+
+        return $this->reportHelper->getObjectColumns($object, $properties);
     }
 
     /**

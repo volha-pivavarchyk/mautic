@@ -4,6 +4,7 @@ namespace Mautic\FormBundle\EventListener;
 
 use Mautic\CoreBundle\Helper\Chart\LineChart;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
+use Mautic\FormBundle\Collector\FieldCollector;
 use Mautic\FormBundle\Entity\Form;
 use Mautic\FormBundle\Entity\FormRepository;
 use Mautic\FormBundle\Entity\SubmissionRepository;
@@ -38,11 +39,11 @@ class ReportSubscriber implements EventSubscriberInterface
         CoreParametersHelper $coreParametersHelper,
         TranslatorInterface $translator
     ) {
-        $this->companyReportData    = $companyReportData;
-        $this->submissionRepository = $submissionRepository;
-        $this->formRepository       = $formRepository;
-        $this->coreParametersHelper = $coreParametersHelper;
-        $this->translator           = $translator;
+        $this->companyReportData           = $companyReportData;
+        $this->submissionRepository        = $submissionRepository;
+        $this->formRepository              = $formRepository;
+        $this->coreParametersHelper        = $coreParametersHelper;
+        $this->translator                  = $translator;
     }
 
     /**
@@ -157,11 +158,18 @@ class ReportSubscriber implements EventSubscriberInterface
             foreach ($forms as $form) {
                 $formEntity          = $form[0];
 
-                $formResultsColumns = $this->getFormResultsColumns($formEntity);
-                $leadColumns        = $event->getLeadColumns();
-                $companyColumns     = $this->companyReportData->getCompanyData();
+                $formResultsColumns  = $this->getFormResultsColumns($formEntity);
+                $leadColumns         = $event->getLeadColumns();
+                $companyColumns      = $this->companyReportData->getCompanyData();
 
-                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns);
+                $mappedObjectData    = $formEntity->getMappedFieldObjectData();
+
+                foreach ($mappedObjectData as $item) {
+                    $columns       = $event->getObjectColumns($item['mappedObject'], ['fieldAlias' => $item['fieldAlias']]);
+                    $columnsMapped = array_merge($columnsMapped ?? [], $columns);
+                }
+
+                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $columnsMapped ?? []);
 
                 $data = [
                     'display_name' => $formEntity->getId().' '.$formEntity->getName(),

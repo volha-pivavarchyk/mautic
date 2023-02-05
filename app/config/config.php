@@ -386,3 +386,6 @@ $container->loadFromExtension('fm_elfinder', [
         ],
     ],
 ]);
+$container->register('api_platform.jsonld.normalizer.item', 'ApiPlatform\Core\JsonLd\Serializer\ItemNormalizer');
+$container->register('api_platform.serializer.normalizer.item', 'ApiPlatform\Core\Serializer\ItemNormalizer');
+$container->register('api_platform.iri_converter', 'ApiPlatform\Core\Bridge\Symfony\Routing\IriConverter');
