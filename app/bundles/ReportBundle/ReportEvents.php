@@ -99,4 +99,15 @@ final class ReportEvents
      * @var string
      */
     public const REPORT_SCHEDULE_SEND = 'mautic.report_schedule_send';
+
+    /**
+     * The mautic.report_on_column_collect event is dispatched before displaying the report builder form to allow
+     * bundles to specify the report columns.
+     *
+     * The event listener receives a Mautic\ReportBundle\Event\ColumnCollectEvent instance.
+     *
+     * @var string
+     */
+    public const ON_COLUMN_COLLECT = 'mautic.report_on_column_collect';
+
 }

@@ -4,9 +4,11 @@ namespace Mautic\FormBundle\EventListener;
 
 use Mautic\CoreBundle\Helper\Chart\LineChart;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
+use Mautic\FormBundle\Collector\FieldCollector;
 use Mautic\FormBundle\Entity\Form;
 use Mautic\FormBundle\Entity\FormRepository;
 use Mautic\FormBundle\Entity\SubmissionRepository;
+use Mautic\FormBundle\Event\FieldCollectEvent;
 use Mautic\FormBundle\FormEvents;
 use Mautic\LeadBundle\Model\CompanyReportData;
 use Mautic\FormBundle\Event\MappedObjectColumnEvent;
@@ -35,6 +37,7 @@ class ReportSubscriber implements EventSubscriberInterface
     private TranslatorInterface $translator;
 
     private ContractsEventDispatcherInterface $eventDispatcher;
+    private FieldCollector $fieldCollector;
 
     public function __construct(
         CompanyReportData $companyReportData,
@@ -42,7 +45,8 @@ class ReportSubscriber implements EventSubscriberInterface
         FormRepository $formRepository,
         CoreParametersHelper $coreParametersHelper,
         TranslatorInterface $translator,
-        ContractsEventDispatcherInterface $eventDispatcher
+        ContractsEventDispatcherInterface $eventDispatcher,
+        FieldCollector $fieldCollector
     ) {
         $this->companyReportData           = $companyReportData;
         $this->submissionRepository        = $submissionRepository;
@@ -50,6 +54,8 @@ class ReportSubscriber implements EventSubscriberInterface
         $this->coreParametersHelper        = $coreParametersHelper;
         $this->translator                  = $translator;
         $this->eventDispatcher             = $eventDispatcher;
+        $this->fieldCollector             = $fieldCollector;
+
     }
 
     /**
@@ -169,11 +175,17 @@ class ReportSubscriber implements EventSubscriberInterface
                 $companyColumns      = $this->companyReportData->getCompanyData();
 
                 $mappedObjectData    = $formEntity->getMappedFieldObjectData();
-                $eventMappedObject   = new MappedObjectColumnEvent($mappedObjectData);
-                $this->eventDispatcher->dispatch($eventMappedObject, FormEvents::ON_GENERATE_MAPPED_OBJECT_COLUMNS);
-                $mappedObjectColumns = $eventMappedObject->getMappedObjectColumns();
+//                $eventMappedObject   = new MappedObjectColumnEvent($mappedObjectData);
+//                $this->eventDispatcher->dispatch($eventMappedObject, FormEvents::ON_GENERATE_MAPPED_OBJECT_COLUMNS);
+//                $mappedObjectColumns = $eventMappedObject->getMappedObjectColumns();
 
-                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $mappedObjectColumns);
+                foreach ($mappedObjectData as $item) {
+                    $columns       = $event->getObjectColumns($item['mappedObject'], ['fieldAlias' => $item['fieldAlias']]);
+                    $columnsMapped = array_merge($columnsMapped ?? [], $columns);
+                }
+
+//                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $mappedObjectColumns);
+                $formResultsColumns = array_merge($formResultsColumns, $leadColumns, $companyColumns, $columnsMapped ?? []);
 
                 $data = [
                     'display_name' => $formEntity->getId().' '.$formEntity->getName(),
