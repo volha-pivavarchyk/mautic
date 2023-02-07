@@ -1240,7 +1240,7 @@ class LeadModel extends FormModel
      *
      * @throws \Exception
      */
-    public function import($fields, $data, $owner = null, $list = null, $tags = null, $persist = true, LeadEventLog $eventLog = null, $importId = null, $skipIfExists = false)
+    public function import($fields, &$data, $owner = null, $list = null, $tags = null, $persist = true, LeadEventLog $eventLog = null, $importId = null, $skipIfExists = false)
     {
         $fields    = array_flip($fields);
         $fieldData = [];
@@ -1505,6 +1505,7 @@ class LeadModel extends FormModel
                 $this->userHelper->getUser()->getName()
             ));
             $this->saveEntity($lead);
+            $data['id'] = $lead->getId();
 
             if (null !== $list) {
                 $this->addToLists($lead, [$list]);

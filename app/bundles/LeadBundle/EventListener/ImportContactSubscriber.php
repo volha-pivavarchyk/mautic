@@ -109,7 +109,7 @@ final class ImportContactSubscriber implements EventSubscriberInterface
                 $event->import->getDefault('skip_if_exists')
             );
             $event->setWasMerged((bool) $merged);
-            $event->stopPropagation();
+//            $event->stopPropagation();
         }
     }
 

@@ -14,12 +14,14 @@ final class ImportProcessEvent extends CommonEvent
     public LeadEventLog $eventLog;
     public array $rowData;
     private ?bool $wasMerged = null;
+    private array $properties;
 
-    public function __construct(Import $import, LeadEventLog $eventLog, array $rowData)
+    public function __construct(Import $import, LeadEventLog $eventLog, array $rowData, $properties = [])
     {
-        $this->import   = $import;
-        $this->eventLog = $eventLog;
-        $this->rowData  = $rowData;
+        $this->import     = $import;
+        $this->eventLog   = $eventLog;
+        $this->rowData    = $rowData;
+        $this->properties = $properties;
     }
 
     public function setWasMerged(bool $wasMerged): void
@@ -42,5 +44,21 @@ final class ImportProcessEvent extends CommonEvent
     public function importIsForObject(string $object): bool
     {
         return $this->import->getObject() === $object;
+    }
+
+    /**
+     * @param array<string|int, mixed> $properties
+     */
+    public function setProperties(array $properties): void
+    {
+        $this->properties = $properties;
+    }
+
+    /**
+     * @return array<string|int, mixed>
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
     }
 }
