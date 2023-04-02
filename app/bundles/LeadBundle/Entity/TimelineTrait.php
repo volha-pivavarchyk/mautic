@@ -77,6 +77,8 @@ trait TimelineTrait
             }
 
             $query->orderBy($orderBy, $orderByDir);
+
+            isset($options['order'][2]) && $query->addOrderBy(...$options['order'][2]);
         }
 
         if (!empty($options['limit'])) {

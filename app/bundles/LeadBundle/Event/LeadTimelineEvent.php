@@ -267,8 +267,13 @@ class LeadTimelineEvent extends Event
                             if ($a['timestamp'] == $b['timestamp']) {
                                 $aPriority = isset($a['eventPriority']) ? (int) $a['eventPriority'] : 0;
                                 $bPriority = isset($b['eventPriority']) ? (int) $b['eventPriority'] : 0;
+                                $priority  = $aPriority - $bPriority;
 
-                                return $aPriority - $bPriority;
+                                $aOrder    = isset($a['eventOrder']) ? (int) $a['eventOrder'] : 1000;
+                                $bOrder    = isset($b['eventOrder']) ? (int) $b['eventOrder'] : 1000;
+                                $order     = $aOrder === $bOrder ? 0 : ($aOrder < $bOrder ? -1 : 1);
+
+                                return $priority !== 0 ? $priority : $order;
                             }
 
                             return $a['timestamp'] < $b['timestamp'] ? -1 : 1;

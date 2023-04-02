@@ -148,6 +148,7 @@ class LeadSubscriber implements EventSubscriberInterface
                         ],
                         'eventType'       => $eventTypeName,
                         'timestamp'       => $log['dateTriggered'],
+                        'eventOrder'      => $log['eventOrder'],
                         'extra'           => $extra,
                         'contentTemplate' => $template,
                         'icon'            => 'fa-clock-o',

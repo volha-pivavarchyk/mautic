@@ -73,6 +73,7 @@ class LeadEventLogRepository extends CommonRepository
                     ll.date_triggered as dateTriggered,
                     e.name AS event_name,
                     e.description AS event_description,
+                    e.event_order as eventOrder,
                     c.name AS campaign_name,
                     c.description AS campaign_description,
                     ll.metadata,
@@ -125,6 +126,13 @@ class LeadEventLogRepository extends CommonRepository
                     $query->expr()->like('c.description', $query->expr()->literal('%'.$options['search'].'%'))
                 )
             );
+        }
+
+        if (isset($options['order'])) {
+            $options['order'][] = [
+                'e.event_order',
+                'DESC' === $options['order'][1] ? 'ASC' : 'DESC',
+            ];
         }
 
         return $this->getTimelineResults($query, $options, 'e.name', 'll.date_triggered', ['metadata'], ['dateTriggered', 'triggerDate']);
