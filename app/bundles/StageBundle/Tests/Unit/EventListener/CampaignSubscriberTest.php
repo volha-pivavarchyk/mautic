@@ -51,6 +51,9 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
+            /**
+             * {@inheritdoc}
+             */
             public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
@@ -105,6 +108,9 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
+            /**
+             * {@inheritdoc}
+             */
             public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
@@ -176,6 +182,9 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
+            /**
+             * {@inheritdoc}
+             */
             public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
@@ -251,6 +260,9 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
+            /**
+             * {@inheritdoc}
+             */
             public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
@@ -334,6 +346,9 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
+            /**
+             * {@inheritdoc}
+             */
             public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
@@ -412,7 +427,7 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
-            public function saveEntity($entity, $unlock = true)
+            public function saveEntity($entity, $unlock = true): void
             {
             }
         };
@@ -422,6 +437,9 @@ final class CampaignSubscriberTest extends TestCase
             {
             }
 
+            /**
+             * {@inheritdoc}
+             */
             public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
@@ -457,6 +475,7 @@ final class CampaignSubscriberTest extends TestCase
     private function createTranslatorMock(): TranslatorInterface
     {
         return new class() implements TranslatorInterface {
+            // @phpstan-ignore-next-line
             public function trans($id, array $parameters = [], string $domain = null, string $locale = null): string
             {
                 return '[trans]'.$id.'[/trans]';
