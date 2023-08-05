@@ -62,7 +62,7 @@ final class CampaignSubscriberTest extends TestCase
 
         $logger      = $this->createMock(LoggerInterface::class);
         $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($stageModel, $this->createTranslatorMock(), $stageHelper);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -126,7 +126,7 @@ final class CampaignSubscriberTest extends TestCase
 
         $logger      = $this->createMock(LoggerInterface::class);
         $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($stageModel, $this->createTranslatorMock(), $stageHelper);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -198,7 +198,7 @@ final class CampaignSubscriberTest extends TestCase
 
         $logger      = $this->createMock(LoggerInterface::class);
         $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($stageModel, $this->createTranslatorMock(), $stageHelper);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -274,7 +274,7 @@ final class CampaignSubscriberTest extends TestCase
 
         $logger      = $this->createMock(LoggerInterface::class);
         $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($stageModel, $this->createTranslatorMock(), $stageHelper);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -359,7 +359,7 @@ final class CampaignSubscriberTest extends TestCase
 
         $logger      = $this->createMock(LoggerInterface::class);
         $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($stageModel, $this->createTranslatorMock(), $stageHelper);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -448,7 +448,7 @@ final class CampaignSubscriberTest extends TestCase
 
         $logger      = $this->createMock(LoggerInterface::class);
         $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($stageModel, $this->createTranslatorMock(), $stageHelper);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
