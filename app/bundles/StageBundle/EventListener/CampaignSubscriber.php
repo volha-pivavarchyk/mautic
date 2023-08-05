@@ -9,18 +9,12 @@ use Mautic\CampaignBundle\Event\PendingEvent;
 use Mautic\StageBundle\Entity\Stage;
 use Mautic\StageBundle\Form\Type\StageActionChangeType;
 use Mautic\StageBundle\Helper\StageHelper;
-use Mautic\StageBundle\Model\StageModel;
 use Mautic\StageBundle\StageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CampaignSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var StageModel
-     */
-    private $stageModel;
-
     private StageHelper $stageHelper;
 
     /**
@@ -29,11 +23,9 @@ class CampaignSubscriber implements EventSubscriberInterface
     private $translator;
 
     public function __construct(
-        StageModel $stageModel,
         TranslatorInterface $translator,
         StageHelper $stageHelper
         ) {
-        $this->stageModel = $stageModel;
         $this->translator = $translator;
         $this->stageHelper= $stageHelper;
     }
