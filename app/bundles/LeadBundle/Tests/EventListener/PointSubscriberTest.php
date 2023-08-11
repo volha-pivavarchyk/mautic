@@ -21,15 +21,9 @@ class PointSubscriberTest extends \PHPUnit\Framework\TestCase
      */
     private $leadModel;
 
-    /**
-     * @var StageModel|MockObject
-     */
-    private $stageModel;
+    private StageModel|MockObject $stageModel;
 
-    /**
-     * @var Translator|MockObject
-     */
-    private $translator;
+    private Translator|MockObject $translator;
 
     /**
      * @var PointSubscriber
