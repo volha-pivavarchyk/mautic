@@ -988,14 +988,24 @@ class LeadModel extends FormModel
 
     /**
      * Add lead to Stage.
+     *
+     * @param array|Lead $lead
+     * @param array|Stage $stage
+     * @param bool $manuallyAdded
+     *
+     * @return $this
      */
-    public function addToStage(Lead $lead, Stage $stage, string $origin): LeadModel
+    public function addToStages($lead, $stage, $manuallyAdded = true)
     {
+        if (!$lead instanceof Lead) {
+            $leadId = (is_array($lead) && isset($lead['id'])) ? $lead['id'] : $lead;
+            $lead   = $this->em->getReference(\Mautic\LeadBundle\Entity\Lead::class, $leadId);
+        }
         $lead->setStage($stage);
         $lead->stageChangeLogEntry(
             $stage,
             $stage->getId().': '.$stage->getName(),
-            $origin
+            $this->translator->trans('mautic.stage.event.added.batch')
         );
 
         return $this;
@@ -1007,6 +1017,18 @@ class LeadModel extends FormModel
     public function removeFromStages(Lead $lead, Stage $stage, string $origin): LeadModel
     {
         $lead->setStage(null);
+        $lead->stageChangeLogEntry(
+            $stage,
+            $stage->getId().': '.$stage->getName(),
+            $origin
+        );
+
+        return $this;
+    }
+
+    public function addToStage(Lead $lead, Stage $stage, string $origin): LeadModel
+    {
+        $lead->setStage($stage);
         $lead->stageChangeLogEntry(
             $stage,
             $stage->getId().': '.$stage->getName(),
