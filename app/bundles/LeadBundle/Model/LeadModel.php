@@ -1014,21 +1014,9 @@ class LeadModel extends FormModel
     /**
      * Remove a lead from all Stages.
      */
-    public function removeFromStages(Lead $lead, Stage $stage, $manuallyRemoved = true)
+    public function removeFromStages(Lead $lead, Stage $stage, string $origin): LeadModel
     {
         $lead->setStage(null);
-        $lead->stageChangeLogEntry(
-            $stage,
-            $stage->getId().': '.$stage->getName(),
-            $this->translator->trans('mautic.stage.event.removed.batch')
-        );
-
-        return $this;
-    }
-
-    public function addToStage(Lead $lead, Stage $stage, string $origin): LeadModel
-    {
-        $lead->setStage($stage);
         $lead->stageChangeLogEntry(
             $stage,
             $stage->getId().': '.$stage->getName(),
@@ -1038,12 +1026,9 @@ class LeadModel extends FormModel
         return $this;
     }
 
-    /**
-     * Remove a lead from a stage.
-     */
-    public function removeFromStage(Lead $lead, Stage $stage, string $origin): LeadModel
+    public function addToStage(Lead $lead, Stage $stage, string $origin): LeadModel
     {
-        $lead->setStage(null);
+        $lead->setStage($stage);
         $lead->stageChangeLogEntry(
             $stage,
             $stage->getId().': '.$stage->getName(),
