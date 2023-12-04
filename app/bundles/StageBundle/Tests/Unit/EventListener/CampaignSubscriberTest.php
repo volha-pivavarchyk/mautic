@@ -10,6 +10,7 @@ use Mautic\CampaignBundle\Entity\Event;
 use Mautic\CampaignBundle\Entity\LeadEventLog;
 use Mautic\CampaignBundle\Event\PendingEvent;
 use Mautic\CampaignBundle\EventCollector\Accessor\Event\ActionAccessor;
+use Mautic\CoreBundle\Translation\Translator;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\StageBundle\Entity\Stage;
@@ -51,7 +52,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getEntity($id = null)
+            public function getStage($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -59,8 +60,6 @@ final class CampaignSubscriberTest extends TestCase
             }
         };
 
-        $logger      = $this->createMock(LoggerInterface::class);
-        $stageModel  = $this->createMock(StageModel::class);
         $leadModel   = $this->createMock(LeadModel::class);
         $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
@@ -107,7 +106,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getEntity($id = null)
+            public function getStage($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -124,10 +123,7 @@ final class CampaignSubscriberTest extends TestCase
             }
         };
 
-        $logger      = $this->createMock(LoggerInterface::class);
-        $stageModel  = $this->createMock(StageModel::class);
-        $leadModel   = $this->createMock(LeadModel::class);
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $contactModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -164,9 +160,13 @@ final class CampaignSubscriberTest extends TestCase
 
         $event->setProperties(['stage' => 123]);
 
-        $contactModel = new class() extends LeadModel {
-            public function __construct()
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->any())
+            ->method('info');
+        $contactModel = new class($logger) extends LeadModel {
+            public function __construct($logger)
             {
+                $this->logger = $logger;
             }
 
             public function saveEntity($entity, $unlock = true): void
@@ -180,7 +180,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getEntity($id = null)
+            public function getStage($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -197,10 +197,7 @@ final class CampaignSubscriberTest extends TestCase
             }
         };
 
-        $logger      = $this->createMock(LoggerInterface::class);
-        $stageModel  = $this->createMock(StageModel::class);
-        $leadModel   = $this->createMock(LeadModel::class);
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $contactModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -245,9 +242,14 @@ final class CampaignSubscriberTest extends TestCase
 
         $event->setProperties(['stage' => 123]);
 
-        $contactModel = new class() extends LeadModel {
-            public function __construct()
+        $translator = $this->createMock(Translator::class);
+        $translator->expects($this->any())
+            ->method('trans')
+            ->willReturn('[trans]mautic.stage.campaign.event.already_in_stage[/trans]');
+        $contactModel = new class($translator) extends LeadModel {
+            public function __construct($translator)
             {
+                $this->translator = $translator;
             }
         };
 
@@ -257,7 +259,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getEntity($id = null)
+            public function getStage($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -274,10 +276,7 @@ final class CampaignSubscriberTest extends TestCase
             }
         };
 
-        $logger      = $this->createMock(LoggerInterface::class);
-        $stageModel  = $this->createMock(StageModel::class);
-        $leadModel   = $this->createMock(LeadModel::class);
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $contactModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -330,9 +329,14 @@ final class CampaignSubscriberTest extends TestCase
 
         $event->setProperties(['stage' => 123]);
 
-        $contactModel = new class() extends LeadModel {
-            public function __construct()
+        $translator = $this->createMock(Translator::class);
+        $translator->expects($this->any())
+            ->method('trans')
+            ->willReturn('[trans]mautic.stage.campaign.event.stage_invalid[/trans]');
+        $contactModel = new class($translator) extends LeadModel {
+            public function __construct($translator)
             {
+                $this->translator = $translator;
             }
         };
 
@@ -342,7 +346,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getEntity($id = null)
+            public function getStage($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -360,10 +364,7 @@ final class CampaignSubscriberTest extends TestCase
             }
         };
 
-        $logger      = $this->createMock(LoggerInterface::class);
-        $stageModel  = $this->createMock(StageModel::class);
-        $leadModel   = $this->createMock(LeadModel::class);
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $contactModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -416,9 +417,13 @@ final class CampaignSubscriberTest extends TestCase
 
         $event->setProperties(['stage' => 123]);
 
-        $contactModel = new class() extends LeadModel {
-            public function __construct()
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->any())
+            ->method('info');
+        $contactModel = new class($logger) extends LeadModel {
+            public function __construct($logger)
             {
+                $this->logger = $logger;
             }
 
             public function saveEntity($entity, $unlock = true): void
@@ -432,7 +437,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getEntity($id = null)
+            public function getStage($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -450,10 +455,7 @@ final class CampaignSubscriberTest extends TestCase
             }
         };
 
-        $logger      = $this->createMock(LoggerInterface::class);
-        $stageModel  = $this->createMock(StageModel::class);
-        $leadModel   = $this->createMock(LeadModel::class);
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $contactModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
