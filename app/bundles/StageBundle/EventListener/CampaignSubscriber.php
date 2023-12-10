@@ -32,8 +32,8 @@ class CampaignSubscriber implements EventSubscriberInterface
         LeadModel $leadModel
     ) {
         $this->translator = $translator;
-        $this->stageModel= $stageModel;
-        $this->leadModel= $leadModel;
+        $this->stageModel = $stageModel;
+        $this->leadModel  = $leadModel;
     }
 
     /**
