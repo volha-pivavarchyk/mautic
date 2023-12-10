@@ -9,7 +9,6 @@ use Mautic\CampaignBundle\Event\PendingEvent;
 use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\StageBundle\Entity\Stage;
 use Mautic\StageBundle\Form\Type\StageActionChangeType;
-use Mautic\StageBundle\Helper\StageHelper;
 use Mautic\StageBundle\Model\StageModel;
 use Mautic\StageBundle\StageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -64,7 +63,7 @@ class CampaignSubscriber implements EventSubscriberInterface
         $logs    = $event->getPending();
         $config  = $event->getEvent()->getProperties();
         $stageId = (int) $config['stage'];
-        $stage   = $this->stageModel->getStage($stageId);
+        $stage   = $this->stageModel->getEntity($stageId);
 
         if (null === $stage || !$stage->isPublished()) {
             $event->passAllWithError($this->translator->trans('mautic.stage.campaign.event.stage_missing'));

@@ -1022,7 +1022,7 @@ class LeadModel extends FormModel
         if (isset($stage)) {
             $lead->stageChangeLogEntry(
                 $stage,
-                $stage ? $stage->getId().': '.$stage->getName() : 'there was no stage',
+                $stage->getId().': '.$stage->getName(),
                 $origin
             );
         }
