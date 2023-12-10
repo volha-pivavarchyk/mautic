@@ -384,7 +384,7 @@ class LeadModel extends FormModel
      * @param string|null $action
      * @param array       $options
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface<object>
      *
      * @throws \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      */
@@ -1014,21 +1014,22 @@ class LeadModel extends FormModel
     /**
      * Remove a lead from all Stages.
      */
-    public function removeFromStages(Lead $lead, Stage $stage, string $origin): LeadModel
+    public function removeFromStages(Lead $lead, ?Stage $stage, string $origin): LeadModel
     {
+        $stage = $stage ?? $lead->getStage();
         $lead->setStage(null);
-        $lead->stageChangeLogEntry(
-            $stage,
-            $stage->getId().': '.$stage->getName(),
-            $origin
-        );
+
+        if(isset($stage)) {
+            $lead->stageChangeLogEntry(
+                $stage,
+                $stage ? $stage->getId().': '.$stage->getName() : 'there was no stage',
+                $origin
+            );
+        }
 
         return $this;
     }
 
-    /**
-     * Add lead to Stage.
-     */
     public function addToStage(Lead $lead, Stage $stage, string $origin): LeadModel
     {
         $lead->setStage($stage);
@@ -1060,13 +1061,27 @@ class LeadModel extends FormModel
 
         $this->logger->info(
             sprintf(
-                'StageBundle: Lead %s changed stage from %s (%s) to %s (%s) by %s',
+                'LeadBundle: Lead %s changed stage from %s (%s) to %s (%s) by %s',
                 $lead->getId(),
                 $currentStage?->getName(),
                 $currentStage?->getId(),
                 $stage->getName(),
                 $stage->getId(),
                 $origin
+            )
+        );
+    }
+
+    public function removeFromStage(Lead $lead, ?Stage $stage, string $origin): void
+    {
+        // Get the current stage and validate it vs the new one
+        $this->removeFromStages($lead, $stage, $origin);
+        $this->saveEntity($lead);
+
+        $this->logger->info(
+            sprintf(
+                'LeadBundle: Lead %s removed from stage',
+                $lead->getId(),
             )
         );
     }
@@ -1620,7 +1635,7 @@ class LeadModel extends FormModel
     {
         // known "synonym" fields expected
         $synonyms = ['useragent'  => 'user_agent',
-                     'remotehost' => 'remote_host', ];
+            'remotehost' => 'remote_host', ];
 
         // convert 'query' option to an array if necessary
         if (isset($params['query']) && !is_array($params['query'])) {
@@ -1806,7 +1821,7 @@ class LeadModel extends FormModel
 
         // Add companies that are not in the array of found companies
         $addCompanies = $requestedCompanies->reject(
-            // Reject if the lead is already in the given company
+        // Reject if the lead is already in the given company
             fn ($companyId) => $currentCompanies->has($companyId)
         );
         if ($addCompanies->count()) {
