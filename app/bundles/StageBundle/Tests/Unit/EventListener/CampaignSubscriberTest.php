@@ -52,7 +52,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getStage($id = null)
+            public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -106,7 +106,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getStage($id = null)
+            public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -180,7 +180,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getStage($id = null)
+            public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -259,7 +259,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getStage($id = null)
+            public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -346,7 +346,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getStage($id = null)
+            public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
 
@@ -437,7 +437,7 @@ final class CampaignSubscriberTest extends TestCase
             }
 
             // @phpstan-ignore-next-line
-            public function getStage($id = null)
+            public function getEntity($id = null)
             {
                 Assert::assertSame(123, $id);
 
