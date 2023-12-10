@@ -877,9 +877,9 @@ class LeadModel extends FormModel
     /**
      * Add lead to Stage.
      *
-     * @param array|Lead $lead
+     * @param array|Lead  $lead
      * @param array|Stage $stage
-     * @param bool $manuallyAdded
+     * @param bool        $manuallyAdded
      *
      * @return $this
      */
@@ -907,7 +907,7 @@ class LeadModel extends FormModel
         $stage = $stage ?? $lead->getStage();
         $lead->setStage(null);
 
-        if(isset($stage)) {
+        if (isset($stage)) {
             $lead->stageChangeLogEntry(
                 $stage,
                 $stage ? $stage->getId().': '.$stage->getName() : 'there was no stage',
@@ -1511,7 +1511,7 @@ class LeadModel extends FormModel
     {
         // known "synonym" fields expected
         $synonyms = ['useragent'  => 'user_agent',
-            'remotehost' => 'remote_host', ];
+            'remotehost'          => 'remote_host', ];
 
         // convert 'query' option to an array if necessary
         if (isset($params['query']) && !is_array($params['query'])) {
@@ -1695,7 +1695,7 @@ class LeadModel extends FormModel
 
         // Add companies that are not in the array of found companies
         $addCompanies = $requestedCompanies->reject(
-        // Reject if the lead is already in the given company
+            // Reject if the lead is already in the given company
             fn ($companyId) => $currentCompanies->has($companyId)
         );
         if ($addCompanies->count()) {
