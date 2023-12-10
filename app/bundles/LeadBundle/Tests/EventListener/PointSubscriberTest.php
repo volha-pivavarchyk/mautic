@@ -9,7 +9,6 @@ use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\PointBundle\Entity\TriggerEvent;
 use Mautic\PointBundle\Event\TriggerExecutedEvent;
 use Mautic\StageBundle\Entity\Stage;
-use Mautic\StageBundle\Helper\StageHelper;
 use Mautic\StageBundle\Model\StageModel;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
@@ -37,9 +36,7 @@ class PointSubscriberTest extends \PHPUnit\Framework\TestCase
         $logger            = $this->createMock(LoggerInterface::class);
         $this->stageModel  = $this->createMock(StageModel::class);
 
-        $stageHelper       = new StageHelper($this->leadModel, $this->stageModel, $logger, $this->translator);
-
-        $this->subscriber  = new PointSubscriber($this->leadModel, $stageHelper, $this->translator, $logger);
+        $this->subscriber  = new PointSubscriber($this->leadModel, $this->stageModel, $this->translator, $logger);
     }
 
     public function testOnPointTriggerExecutedIfNotChangeTagsTyoe(): void
@@ -50,6 +47,9 @@ class PointSubscriberTest extends \PHPUnit\Framework\TestCase
 
         $this->leadModel->expects($this->never())
             ->method('modifyTags');
+
+        $this->leadModel->expects($this->once())
+            ->method('changeStage');
 
         $this->subscriber->onTriggerExecute(new TriggerExecutedEvent($triggerEvent, $contact));
     }
@@ -67,6 +67,9 @@ class PointSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->leadModel->expects($this->once())
             ->method('modifyTags')
             ->with($contact, ['tagA'], []);
+
+        $this->leadModel->expects($this->once())
+            ->method('changeStage');
 
         $this->subscriber->onTriggerExecute(new TriggerExecutedEvent($triggerEvent, $contact));
     }
@@ -88,6 +91,9 @@ class PointSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->translator->expects($this->once())
             ->method('trans')
             ->willReturn('');
+
+        $this->leadModel->expects($this->once())
+            ->method('changeStage');
 
         $this->subscriber->onTriggerExecute(new TriggerExecutedEvent($triggerEvent, $contact));
     }

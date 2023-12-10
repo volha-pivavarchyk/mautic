@@ -14,7 +14,6 @@ use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\StageBundle\Entity\Stage;
 use Mautic\StageBundle\EventListener\CampaignSubscriber;
-use Mautic\StageBundle\Helper\StageHelper;
 use Mautic\StageBundle\Model\StageModel;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -61,8 +60,9 @@ final class CampaignSubscriberTest extends TestCase
         };
 
         $logger      = $this->createMock(LoggerInterface::class);
-        $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
+        $stageModel  = $this->createMock(StageModel::class);
+        $leadModel   = $this->createMock(LeadModel::class);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -125,8 +125,9 @@ final class CampaignSubscriberTest extends TestCase
         };
 
         $logger      = $this->createMock(LoggerInterface::class);
-        $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
+        $stageModel  = $this->createMock(StageModel::class);
+        $leadModel   = $this->createMock(LeadModel::class);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -197,8 +198,9 @@ final class CampaignSubscriberTest extends TestCase
         };
 
         $logger      = $this->createMock(LoggerInterface::class);
-        $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
+        $stageModel  = $this->createMock(StageModel::class);
+        $leadModel   = $this->createMock(LeadModel::class);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -273,8 +275,9 @@ final class CampaignSubscriberTest extends TestCase
         };
 
         $logger      = $this->createMock(LoggerInterface::class);
-        $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
+        $stageModel  = $this->createMock(StageModel::class);
+        $leadModel   = $this->createMock(LeadModel::class);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -358,8 +361,9 @@ final class CampaignSubscriberTest extends TestCase
         };
 
         $logger      = $this->createMock(LoggerInterface::class);
-        $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
+        $stageModel  = $this->createMock(StageModel::class);
+        $leadModel   = $this->createMock(LeadModel::class);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
@@ -447,8 +451,9 @@ final class CampaignSubscriberTest extends TestCase
         };
 
         $logger      = $this->createMock(LoggerInterface::class);
-        $stageHelper = new StageHelper($contactModel, $stageModel, $logger, $this->createTranslatorMock());
-        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageHelper);
+        $stageModel  = $this->createMock(StageModel::class);
+        $leadModel   = $this->createMock(LeadModel::class);
+        $subscriber  = new CampaignSubscriber($this->createTranslatorMock(), $stageModel, $leadModel);
 
         $subscriber->onCampaignTriggerStageChange($pendingEvent);
 
