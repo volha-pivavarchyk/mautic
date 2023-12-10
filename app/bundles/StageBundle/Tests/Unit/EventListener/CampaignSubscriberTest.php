@@ -162,7 +162,7 @@ final class CampaignSubscriberTest extends TestCase
         $logger->expects($this->any())
             ->method('info');
         $contactModel = new class($logger) extends LeadModel {
-            public function __construct($logger)
+            public function __construct(LoggerInterface $logger)
             {
                 $this->logger = $logger;
             }
@@ -244,7 +244,7 @@ final class CampaignSubscriberTest extends TestCase
             ->method('trans')
             ->willReturn('[trans]mautic.stage.campaign.event.already_in_stage[/trans]');
         $contactModel = new class($translator) extends LeadModel {
-            public function __construct($translator)
+            public function __construct(Translator $translator)
             {
                 $this->translator = $translator;
             }
@@ -330,7 +330,7 @@ final class CampaignSubscriberTest extends TestCase
             ->method('trans')
             ->willReturn('[trans]mautic.stage.campaign.event.stage_invalid[/trans]');
         $contactModel = new class($translator) extends LeadModel {
-            public function __construct($translator)
+            public function __construct(Translator $translator)
             {
                 $this->translator = $translator;
             }
@@ -416,7 +416,7 @@ final class CampaignSubscriberTest extends TestCase
         $logger->expects($this->any())
             ->method('info');
         $contactModel = new class($logger) extends LeadModel {
-            public function __construct($logger)
+            public function __construct(LoggerInterface $logger)
             {
                 $this->logger = $logger;
             }
