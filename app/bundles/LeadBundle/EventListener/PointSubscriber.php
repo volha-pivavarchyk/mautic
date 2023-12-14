@@ -54,11 +54,11 @@ class PointSubscriber implements EventSubscriberInterface
             ]
         );
 
-        $stages =$this->stageModel->getUserStages();
-
-        $choices['remove existing stage'] = 0;
-        foreach ($stages as $s) {
-            $choices[$s['name']] = $s['id'];
+        $stages                  = $this->stageModel->getUserStages();
+        $stageListItem           = $this->translator->trans('mautic.lead.stage.remove');
+        $choices[$stageListItem] = 0;
+        foreach ($stages as $stage) {
+            $choices[$stage['name']] = $stage['id'];
         }
 
         $event->addEvent(
