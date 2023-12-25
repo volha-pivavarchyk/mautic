@@ -920,6 +920,72 @@ class LeadModel extends FormModel
         return $this;
     }
 
+    public function addToStage(Lead $lead, Stage $stage, string $origin): LeadModel
+    {
+        $lead->setStage($stage);
+        $lead->stageChangeLogEntry(
+            $stage,
+            $stage->getId().': '.$stage->getName(),
+            $origin
+        );
+
+        return $this;
+    }
+
+    public function changeStage(Lead $lead, Stage $stage, string $origin): void
+    {
+        // Get the current stage and validate it vs the new one
+        $currentStage = $lead->getStage();
+        if ($currentStage) {
+            if ($currentStage->getId() === $stage->getId()) {
+                throw new \UnexpectedValueException($this->translator->trans('mautic.stage.campaign.event.already_in_stage'));
+            }
+
+            if ($currentStage->getWeight() > $stage->getWeight()) {
+                throw new \UnexpectedValueException($this->translator->trans('mautic.stage.campaign.event.stage_invalid'));
+            }
+        }
+
+        $this->addToStage($lead, $stage, $origin);
+        $this->saveEntity($lead);
+
+        $this->logger->info(
+            sprintf(
+                'LeadBundle: Lead %s changed stage from %s (%s) to %s (%s) by %s',
+                $lead->getId(),
+                $currentStage?->getName(),
+                $currentStage?->getId(),
+                $stage->getName(),
+                $stage->getId(),
+                $origin
+            )
+        );
+    }
+
+    public function removeFromStage(Lead $lead, ?Stage $stage, string $origin): void
+    {
+        // Get the current stage and validate it vs the new one
+        $stage = $stage ?? $lead->getStage();
+        $lead->setStage(null);
+
+        if (isset($stage)) {
+            $lead->stageChangeLogEntry(
+                $stage,
+                $stage->getId().': '.$stage->getName(),
+                $origin
+            );
+        }
+
+        $this->saveEntity($lead);
+
+        $this->logger->info(
+            sprintf(
+                'LeadBundle: Lead %s removed from stage',
+                $lead->getId(),
+            )
+        );
+    }
+
     /**
      * @param string $channel
      *
@@ -1458,7 +1524,7 @@ class LeadModel extends FormModel
     {
         // known "synonym" fields expected
         $synonyms = ['useragent'  => 'user_agent',
-                     'remotehost' => 'remote_host', ];
+            'remotehost'          => 'remote_host', ];
 
         // convert 'query' option to an array if necessary
         if (isset($params['query']) && !is_array($params['query'])) {
